@@ -1,11 +1,12 @@
 include: "rules/common.smk"
 
+
 module dna_seq_varlociraptor:
     snakefile:
         github(
             "snakemake-workflows/dna-seq-varlociraptor",
             path="workflow/Snakefile",
-            branch="datavzrd",
+            branch="datavzrd",  # TODO use release once done
         )
     config:
         config
