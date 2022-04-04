@@ -91,14 +91,17 @@ calling:
     cancer_relevant: >-
       ANN['IMPACT'] != 'MODIFIER' and ANN['Consequence'] != 'synonymous_variant'
     cancer_genes:
-      extra: "--aux cancer_genes raw/genelists/cancerGeneList.tsv"
+      aux-files:
+        cancer_genes: ../resources/config/gene-sets/cancer-genes.txt
       expression: "ANN['SYMBOL'] in AUX['cancer_genes']"
     pik3_pathway:
-      extra: "--aux pathway_genes raw/genelists/PI3K_AKT_mTOR.txt"
+      aux-files:
+        pathway_genes: ../resources/config/gene-sets/PIK3_AKT_mTOR.txt
       expression: >-
         ANN['SYMBOL'] in AUX['pathway_genes']
     raf_pathway:
-      extra: "--aux pathway_genes raw/genelists/RAF_MEK_ERK.txt"
+      aux-files:
+        pathway_genes: ../resources/config/gene-sets/RAF_MEK_ERK.txt
       expression: >-
         ANN['SYMBOL'] in AUX['pathway_genes']
   fdr-control:
@@ -118,6 +121,7 @@ calling:
           Variants with loss of heterozygosity or strong somatic amplification of the alt allele.
         labels:
           event: LOH or amplification of alt allele
+        subcategory: loss of heterozygosity
 
       impact_moderate_novel_high_vaf:
         varlociraptor:
@@ -133,10 +137,9 @@ calling:
         desc: |
           Novel somatic variants with moderate impact and high allele frequency.
         labels:
-          event: somatic
           impact: moderate
           VAF: high
-          described before: "no"
+        subcategory: somatic variants of uncertain significance
 
       impact_moderate_novel_low_vaf:
         varlociraptor:
@@ -152,10 +155,9 @@ calling:
         desc: |
           Novel somatic variants with moderate impact and low allele frequency.
         labels:
-          event: somatic
           impact: moderate
           VAF: low
-          described before: "no"
+        subcategory: somatic variants of uncertain significance
 
       impact_high_novel_high_vaf:
         varlociraptor:
@@ -171,10 +173,9 @@ calling:
         desc: |
           Novel somatic variants with high impact and high allele frequency.
         labels:
-          event: somatic
           impact: high
           VAF: high
-          described before: "no"
+        subcategory: somatic variants of uncertain significance
 
       impact_high_novel_low_vaf:
         varlociraptor:
@@ -190,10 +191,9 @@ calling:
         desc: |
           Novel somatic variants with high impact and low allele frequency.
         labels:
-          event: somatic
           impact: high
           VAF: low
-          described before: "no"
+        subcategory: somatic variants of uncertain significance
 
       pathogenic_risk_factor_drug_response:
         varlociraptor:
@@ -208,9 +208,8 @@ calling:
         desc: |
           Somatic variants being pathogenic or risk factor high.
         labels:
-          event: somatic
-          impact: pathogenic, risk factor, or drug response
-          described before: "yes"
+          clinical significance: pathogenic, risk factor, or drug response
+        subcategory: known somatic variants
 
       cancer_genes:
         varlociraptor:
@@ -225,8 +224,8 @@ calling:
         desc: |
           Somatic variants affecting known cancer genes with low to high impact.
         labels:
-          event: somatic
-          impact: cancer genes
+          gene set: cancer genes
+        subcategory: somatic variants in gene sets and pathways
 
       pik3_pathway:
         varlociraptor:
@@ -241,8 +240,8 @@ calling:
         desc: |
           Somatic variants affecting PI3K-AKT-mTOR pathway genes, sorted by impact and revel scores while discarding synonymous variants.
         labels:
-          event: somatic
-          impact: PI3K-AKT-mTOR pathway
+          gene set: PI3K-AKT-mTOR pathway
+        subcategory: somatic variants in gene sets and pathways
 
       raf_pathway:
         varlociraptor:
@@ -257,8 +256,8 @@ calling:
         desc: |
           Somatic variants affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants.
         labels:
-          event: somatic
-          impact: RAF-MEK-ERK pathway
+          gene set: RAF-MEK-ERK pathway
+        subcategory: somatic variants in gene sets and pathways
 
 # If calc_consensus_reads is activated duplicates will be merged
 remove_duplicates:
