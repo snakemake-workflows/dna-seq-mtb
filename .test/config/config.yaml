@@ -3,7 +3,6 @@ samples: config/samples.tsv
 units: config/units.tsv
 
 # Optional BED file with target regions
-# uncomment to use
 # target_regions: "raw/V5UTR.bed"
 
 primers:
