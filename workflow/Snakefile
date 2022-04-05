@@ -13,3 +13,6 @@ module dna_seq_varlociraptor:
 
 
 use rule * from dna_seq_varlociraptor
+
+
+print(dna_seq_varlociraptor.units.loc["tumor", "umis"])
