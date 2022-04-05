@@ -94,9 +94,9 @@ calling:
       aux-files:
         cancer_genes: ../resources/config/gene-sets/cancer-genes.txt
       expression: "ANN['SYMBOL'] in AUX['cancer_genes']"
-    pik3_pathway:
+    pi3k_pathway:
       aux-files:
-        pathway_genes: ../resources/config/gene-sets/PIK3_AKT_mTOR.txt
+        pathway_genes: ../resources/config/gene-sets/PI3K_AKT_mTOR.txt
       expression: >-
         ANN['SYMBOL'] in AUX['pathway_genes']
     raf_pathway:
@@ -227,13 +227,13 @@ calling:
           gene set: cancer genes
         subcategory: somatic variants in gene sets and pathways
 
-      pik3_pathway:
+      pi3k_pathway:
         varlociraptor:
           - somatic_tumor_high
           - somatic_tumor_low
         filter:
           - cancer_relevant
-          - pik3_pathway
+          - pi3k_pathway
         sort:
           - impact
           - revel
