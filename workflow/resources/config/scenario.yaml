@@ -41,8 +41,8 @@ samples:
 events:
   somatic_tumor_high: "normal:0.0 & tumor:[0.1,1.0]"
   somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1["
-  somatic_normal: "normal:[0.05,0.5["
-  somatic_normal_or_ctc: "normal:]0.0,0.05["
+  somatic_normal: "normal:[0.05,0.5[ & tumor:[0.0,1.0]"
+  somatic_normal_or_ctc: "normal:]0.0,0.05[ & tumor:[0.0,1.0]"
   loh: "normal:0.5 & tumor:1.0"
-  loh_or_amplification: "normal:0.5 & tumor:[0.9,1.0[ "
-  germline: "(normal:0.5 | normal:1.0) & !($loh | $loh_or_amplification)"
+  loh_or_amplification: "normal:0.5 & tumor:[0.9,1.0["
+  germline: "(normal:0.5 & tumor:[0.0,0.9[) | (normal:1.0 & tumor:[0.0,1.0])"
