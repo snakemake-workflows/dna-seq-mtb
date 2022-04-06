@@ -92,8 +92,7 @@ calling:
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
     loh_relevant: >-
       ANN['IMPACT'] != 'LOW' and ANN['IMPACT'] != 'MODIFIER' and
-      set(["benign", "likely benign"]) > set(ANN['CLIN_SIG']) and
-      "benign" in ANN['CLIN_SIG']
+      not (set(["benign", "likely benign"]) > set(ANN['CLIN_SIG']) and "benign" in ANN['CLIN_SIG'])
     cancer_relevant: >-
       ANN['IMPACT'] != 'MODIFIER' and ANN['Consequence'] != 'synonymous_variant'
     cancer_genes:
