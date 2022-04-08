@@ -109,6 +109,22 @@ calling:
         pathway_genes: ../resources/config/gene-sets/RAF_MEK_ERK.txt
       expression: >-
         ANN['SYMBOL'] in AUX['pathway_genes']
+    cell_cycle:
+      aux-files:
+        cell_cycle: ../resources/config/gene-sets/Cell_Cycle.txt
+      expression: "ANN['SYMBOL'] in AUX['cell_cycle']"
+    dna_damage_response:
+      aux-files:
+        dna_damage_response: ../resources/config/gene-sets/DNA_Damage_Response.txt
+      expression: "ANN['SYMBOL'] in AUX['dna_damage_response']"
+    g1_topart:
+      aux-files:
+        g1_topart: ../resources/config/gene-sets/G1_TOPART.txt
+      expression: "ANN['SYMBOL'] in AUX['g1_topart']"
+    tyrosine_kinases:
+      aux-files:
+        tyrosine_kinases: ../resources/config/gene-sets/Tyrosine_Kinases.txt
+      expression: "ANN['SYMBOL'] in AUX['tyrosine_kinases']"
   fdr-control:
     threshold: 0.05
     local: true
@@ -262,6 +278,70 @@ calling:
           Somatic variants affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants.
         labels:
           gene set: RAF-MEK-ERK pathway
+        subcategory: somatic variants in gene sets and pathways
+
+      cell_cycle:
+        varlociraptor:
+          - somatic_tumor_high
+          - somatic_tumor_low
+        filter:
+          - cancer_relevant
+          - cell_cycle
+        sort:
+          - impact
+          - revel
+        desc: |
+          Somatic variants affecting cell cycle genes with low to high impact.
+        labels:
+          gene set: cancer genes
+        subcategory: somatic variants in gene sets and pathways
+
+      dna_damage_response:
+        varlociraptor:
+          - somatic_tumor_high
+          - somatic_tumor_low
+        filter:
+          - cancer_relevant
+          - dna_damage_response
+        sort:
+          - impact
+          - revel
+        desc: |
+          Somatic variants affecting dna damage resonse genes with low to high impact.
+        labels:
+          gene set: cancer genes
+        subcategory: somatic variants in gene sets and pathways
+
+      g1_topart:
+        varlociraptor:
+          - somatic_tumor_high
+          - somatic_tumor_low
+        filter:
+          - cancer_relevant
+          - g1_topart
+        sort:
+          - impact
+          - revel
+        desc: |
+          Somatic variants affecting G1 topart genes with low to high impact.
+        labels:
+          gene set: cancer genes
+        subcategory: somatic variants in gene sets and pathways
+
+      tyrosine_kinases:
+        varlociraptor:
+          - somatic_tumor_high
+          - somatic_tumor_low
+        filter:
+          - cancer_relevant
+          - tyrosine_kinases
+        sort:
+          - impact
+          - revel
+        desc: |
+          Somatic variants affecting tyrosine kinases genes with low to high impact.
+        labels:
+          gene set: cancer genes
         subcategory: somatic variants in gene sets and pathways
 
 # If calc_consensus_reads is activated duplicates will be merged
