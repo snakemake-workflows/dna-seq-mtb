@@ -5,7 +5,8 @@
 
 
 A Snakemake workflow for calling somatic variants in tumor/normal samples.
-A tumor-only mode will be added soon.
+This workflow is under heavy development. 
+A tumor-only mode will be added soon, as well as options for handling FFPE samples.
 
 
 ## Usage
