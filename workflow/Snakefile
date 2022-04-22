@@ -13,3 +13,22 @@ module dna_seq_varlociraptor:
 
 
 use rule * from dna_seq_varlociraptor
+
+
+if (
+    dna_seq_varlociraptor.samples.loc[
+        dna_seq_varlociraptor.samples["alias"] == "normal", "ffpe"
+    ]
+    == 1
+).any():
+    raise WorkflowError(
+        "Invalid value for ffpe column in sample sheet. ffpe treated normal samples are not supported."
+    )
+
+for sample, events in zip(
+    ["normal", "tumor"],
+    ["germline,loh,loh_or_amplification", "somatic_tumor_low,somatic_tumor_high"],
+):
+    dna_seq_varlociraptor.samples.loc[
+        dna_seq_varlociraptor.samples["alias"] == sample, "mutational_burden_events"
+    ] = events

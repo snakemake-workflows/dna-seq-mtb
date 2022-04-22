@@ -39,12 +39,41 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Test workflow
+    - name: Test workflow (tumor/normal)
       uses: snakemake/snakemake-github-action@v1.24.0
       with:
-        directory: .test
+        directory: .test/tumor_normal
         snakefile: workflow/Snakefile
         args: "--use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
+
+
+    - name: Test workflow (tumor/normal, ffpe)
+      uses: snakemake/snakemake-github-action@v1.24.0
+      with:
+        directory: .test/tumor_normal_ffpe
+        snakefile: workflow/Snakefile
+        args: "--use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
+        stagein: |
+          rm -rf .test/results
+
+
+    - name: Test workflow (tumor only)
+      uses: snakemake/snakemake-github-action@v1.24.0
+      with:
+        directory: .test/tumor_only
+        snakefile: workflow/Snakefile
+        args: "--use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
+        stagein: |
+          rm -rf .test/results
+
+    - name: Test workflow (tumor only, ffpe)
+      uses: snakemake/snakemake-github-action@v1.24.0
+      with:
+        directory: .test/tumor_only_ffpe
+        snakefile: workflow/Snakefile
+        args: "--use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
+        stagein: |
+          rm -rf .test/results
 
     - name: Test report
       uses: snakemake/snakemake-github-action@v1.24.0
