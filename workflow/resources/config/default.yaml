@@ -95,6 +95,8 @@ calling:
       not (set(["benign", "likely benign"]) > set(ANN['CLIN_SIG']) and "benign" in ANN['CLIN_SIG'])
     cancer_relevant: >-
       ANN['IMPACT'] != 'MODIFIER' and ANN['Consequence'] != 'synonymous_variant'
+    splice_mutation: >-
+      'splice' in ANN['Consequence']
     cancer_genes:
       aux-files:
         cancer_genes: ../resources/config/gene-sets/cancer-genes.txt
@@ -231,6 +233,21 @@ calling:
         labels:
           clinical significance: pathogenic, risk factor, or drug response
         subcategory: known somatic variants
+      
+      somatic_splice_mutation:
+        varlociraptor:
+          - somatic_tumor_high
+          - somatic_tumor_low
+        filter:
+          - splice_mutation
+        sort:
+          - impact
+          - revel
+        desc: |
+          Somatic splice mutations
+        labels:
+          consequence: splice
+        subcategory: somatic splice mutations
 
       cancer_genes:
         varlociraptor:
