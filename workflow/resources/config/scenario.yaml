@@ -38,7 +38,7 @@ species:
 
   samples:
     tumor:
-      sex: ?f"{sex}"
+      sex: ?sex
       somatic-effective-mutation-rate: 1e-6
       inheritance:
         clonal:
@@ -48,7 +48,7 @@ species:
         by: normal
         fraction: ?contamination()
     normal:
-      sex: ?f"{sex}"
+      sex: ?sex
       somatic-effective-mutation-rate: 1e-6
 
   events:
