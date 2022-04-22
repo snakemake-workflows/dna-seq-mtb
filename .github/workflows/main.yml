@@ -42,17 +42,17 @@ jobs:
     - name: Test workflow (tumor/normal)
       uses: snakemake/snakemake-github-action@v1.24.0
       with:
-        directory: .test/tumor_normal
+        directory: .test
         snakefile: workflow/Snakefile
-        args: "--use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
+        args: "--configfile .test/tumor_normal/config.yaml --use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
 
 
     - name: Test workflow (tumor/normal, ffpe)
       uses: snakemake/snakemake-github-action@v1.24.0
       with:
-        directory: .test/tumor_normal_ffpe
+        directory: .test
         snakefile: workflow/Snakefile
-        args: "--use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
+        args: "--configfile .test/tumor_normal_ffpe/config.yaml --use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
         stagein: |
           rm -rf .test/results
 
@@ -60,18 +60,18 @@ jobs:
     - name: Test workflow (tumor only)
       uses: snakemake/snakemake-github-action@v1.24.0
       with:
-        directory: .test/tumor_only
+        directory: .test
         snakefile: workflow/Snakefile
-        args: "--use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
+        args: "--configfile .test/tumor_only/config.yaml --use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
         stagein: |
           rm -rf .test/results
 
     - name: Test workflow (tumor only, ffpe)
       uses: snakemake/snakemake-github-action@v1.24.0
       with:
-        directory: .test/tumor_only_ffpe
+        directory: .test
         snakefile: workflow/Snakefile
-        args: "--use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
+        args: "--configfile .test/tumor_only_ffpe/config.yaml --use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
         stagein: |
           rm -rf .test/results
 
