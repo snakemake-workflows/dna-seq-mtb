@@ -1,6 +1,6 @@
-samples: config/samples.tsv
+samples: config-tumor_normal/samples.tsv
 
-units: config/units.tsv
+units: config-tumor_normal/units.tsv
 
 # Optional BED file with target regions
 # target_regions: "raw/V5UTR.bed"

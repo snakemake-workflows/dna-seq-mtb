@@ -83,10 +83,12 @@ calling:
       FORMAT['AF']['tumor'] <= 0.2
     revel_malign: >-
       (ANN['REVEL'] is NA or ANN['REVEL'] > 0.5)
-    impact_moderate_novel: >-
-      ANN['IMPACT'] == 'MODERATE' and not (ID and ID.startswith('rs'))
-    impact_high_novel: >-
-      ANN['IMPACT'] == 'HIGH' and not (ID and ID.startswith('rs'))
+    impact_moderate: >-
+      ANN['IMPACT'] == 'MODERATE'
+    impact_high: >-
+      ANN['IMPACT'] == 'HIGH'
+    novel: >-
+      not (ID and ID.startswith('rs'))
     pathogenic_risk_factor_drug_response: >-
       (not {'risk_factor', 'pathogenic', 'likely_pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
@@ -151,7 +153,8 @@ calling:
           - somatic_tumor_high
           - somatic_tumor_low
         filter:
-          - impact_moderate_novel
+          - impact_moderate
+          - novel
           - revel_malign
           - allele_frequency_high
         sort:
@@ -169,7 +172,8 @@ calling:
           - somatic_tumor_high
           - somatic_tumor_low
         filter:
-          - impact_moderate_novel
+          - impact_moderate
+          - novel
           - revel_malign
           - allele_frequency_low
         sort:
@@ -187,7 +191,8 @@ calling:
           - somatic_tumor_high
           - somatic_tumor_low
         filter:
-          - impact_high_novel
+          - impact_high
+          - novel
           - revel_malign
           - allele_frequency_high
         sort:
@@ -205,7 +210,8 @@ calling:
           - somatic_tumor_high
           - somatic_tumor_low
         filter:
-          - impact_high_novel
+          - impact_high
+          - novel
           - revel_malign
           - allele_frequency_low
         sort:
@@ -234,12 +240,14 @@ calling:
           clinical significance: pathogenic, risk factor, or drug response
         subcategory: known somatic variants
       
-      somatic_splice_mutation:
+      splice_variants:
         varlociraptor:
           - somatic_tumor_high
           - somatic_tumor_low
         filter:
           - splice_mutation
+          - revel_malign
+          - novel
         sort:
           - impact
           - revel
@@ -247,7 +255,7 @@ calling:
           Somatic splice mutations
         labels:
           consequence: splice
-        subcategory: somatic splice mutations
+        subcategory: somatic variants of uncertain significance
 
       cancer_genes:
         varlociraptor:
