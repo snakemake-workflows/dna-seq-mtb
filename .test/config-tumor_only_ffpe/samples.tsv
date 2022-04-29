@@ -1,2 +1,2 @@
-sample_name	group	alias	platform	purity	ffpe
-tumor	patient-a	tumor	ILLUMINA	0.89	1
+sample_name	group	alias	platform	purity	sex	ffpe
+tumor	patient-a	tumor	ILLUMINA	0.89	male	1

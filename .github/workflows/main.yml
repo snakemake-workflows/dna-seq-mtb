@@ -46,6 +46,12 @@ jobs:
         snakefile: workflow/Snakefile
         args: "--configfile .test/config-tumor_normal/config.yaml --use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
 
+    - name: Test report
+      uses: snakemake/snakemake-github-action@v1.24.0
+      with:
+        directory: .test
+        snakefile: workflow/Snakefile
+        args: "--report report.zip"
 
     - name: Test workflow (tumor/normal, ffpe)
       uses: snakemake/snakemake-github-action@v1.24.0
@@ -55,7 +61,6 @@ jobs:
         args: "--configfile .test/config-tumor_normal_ffpe/config.yaml --use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
         stagein: |
           rm -rf .test/results
-
 
     - name: Test workflow (tumor only)
       uses: snakemake/snakemake-github-action@v1.24.0
@@ -74,10 +79,3 @@ jobs:
         args: "--configfile .test/config-tumor_only_ffpe/config.yaml --use-conda --show-failed-logs --cores 3 --conda-cleanup-pkgs cache --all-temp"
         stagein: |
           rm -rf .test/results
-
-    - name: Test report
-      uses: snakemake/snakemake-github-action@v1.24.0
-      with:
-        directory: .test
-        snakefile: workflow/Snakefile
-        args: "--report report.zip"
