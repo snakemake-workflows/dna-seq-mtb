@@ -1,3 +1,0 @@
-sample_name	unit_name	fq1	fq2	adapters	sra
-tumor	lane1	data/reads/a.chr21.1.fq	data/reads/a.chr21.2.fq	"-a ACGGCTAGCTA -A AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC"	
-normal	lane1	data/reads/b.chr21.1.fq	data/reads/b.chr21.2.fq	"-a ACGGCTAGCTA -A AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC"	

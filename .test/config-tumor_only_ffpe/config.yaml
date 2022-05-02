@@ -1,0 +1,60 @@
+samples: config-tumor_only_ffpe/samples.tsv
+
+units: config-tumor_only_ffpe/units.tsv
+
+ref:
+  # Number of chromosomes to consider for calling.
+  # The first n entries of the FASTA will be considered.
+  n_chromosomes: 17
+  # Ensembl species name
+  species: saccharomyces_cerevisiae
+  # Ensembl release
+  release: 100
+  # Genome build
+  build: R64-1-1
+
+# If calc_consensus_reads is activated duplicates will be merged
+remove_duplicates:
+  activate: false
+
+calling:
+  delly:
+    activate: true
+  freebayes:
+    activate: true
+  # See http://snpeff.sourceforge.net/SnpSift.html#filter
+  filter:
+    revel_malign: >-
+      (False)
+
+
+annotations:
+  vcfs:
+    activate: true
+    # annotate with known variants from ensembl
+    known: resources/variation.vcf.gz
+    # add more external VCFs as needed
+    # cosmic: path/to/cosmic.vcf.gz
+  dgidb:
+    # annotate variants with drug interactions of affected genes
+    activate: false
+    # List of datasources for filtering dgidb entries
+    # Available sources can be found on http://dgidb.org/api/v2/interaction_sources.json
+    datasources:
+      - DrugBank
+  vep:
+    # Consider removing --everything if VEP is slow for you (e.g. for WGS), 
+    # and think carefully about which annotations you need.
+    params: --everything --check_existing
+    plugins:
+      # Add any plugin from https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html
+      # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
+      - LoFtool
+
+# printing of variants in a table format
+tables:
+  activate: true
+  output:
+    event_prob: true
+    observations: true
+  generate_excel: true

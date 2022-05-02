@@ -1,0 +1,2 @@
+sample_name	unit_name	fq1	fq2	adapters	sra
+tumor	lane1	data/reads/a.scerevisiae.1.fq	data/reads/a.scerevisiae.2.fq	"-a ACGGCTAGCTA -A AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC"	
