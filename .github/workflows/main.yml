@@ -51,7 +51,7 @@ jobs:
       with:
         directory: .test
         snakefile: workflow/Snakefile
-        args: "--report report.zip"
+        args: "--configfile .test/config-tumor_normal/config.yaml --report report.zip"
 
     - name: Test workflow (tumor/normal, ffpe)
       uses: snakemake/snakemake-github-action@v1.24.0
