@@ -14,6 +14,14 @@ module dna_seq_varlociraptor:
 
 use rule * from dna_seq_varlociraptor
 
+if "normal" not in dna_seq_varlociraptor.samples["alias"]:
+    del dna_seq_varlociraptor.config["calling"]["fdr-control"]["events"]["loh_or_amplification"]
+else:
+    tissue_counts = dna_seq_varlociraptor.samples.groupby("alias").size()
+    if tissue_counts["normal"] != tissue_counts["tumor"]:
+        raise WorkflowError(
+            "Invalid definition of tumor and normal samples in sample sheet. Only tumor/normal or tumor only groups are allowed at once."
+        )
 
 if not "ffpe" in dna_seq_varlociraptor.samples.columns:
     dna_seq_varlociraptor.samples["ffpe"] = 0

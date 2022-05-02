@@ -2,54 +2,59 @@ samples: config-tumor_normal/samples.tsv
 
 units: config-tumor_normal/units.tsv
 
-# Optional BED file with target regions
-# target_regions: "raw/V5UTR.bed"
+ref:
+  # Number of chromosomes to consider for calling.
+  # The first n entries of the FASTA will be considered.
+  n_chromosomes: 17
+  # Ensembl species name
+  species: saccharomyces_cerevisiae
+  # Ensembl release
+  release: 100
+  # Genome build
+  build: R64-1-1
 
-primers:
-  trimming:
-    activate: false
-    # path to fasta files containg primer sequences
-    primers_fa1: "path/to/primer-fa1"
-    primers_fa2: "path/to/primer-fa2"
-    # optional primer file allowing to define primers per sample
-    # overwrites primers_fa1 and primers_fa2
-    # the tsv file requires three fields: panel, fa1 and fa2 (optional)
-    tsv: ""
-    # Mean insert size between the outer primer ends.
-    # If 0 or not set the bowtie default value of 250 will be used
-    library_length: 0
-
-calc_consensus_reads:
-  # Set to true for merging PCR duplicates and overlapping reads using rbt:
-  # https://github.com/rust-bio/rust-bio-tools
+# If calc_consensus_reads is activated duplicates will be merged
+remove_duplicates:
   activate: false
 
-# Estimation of mutational burden.
-mutational_burden:
-  # Size of the sequenced coding genome for mutational burden estimation
-  # Attention: when doing panel sequencing, set this to the
-  # CAPTURED coding genome, not the entire one!
-  coding_genome_size: 3e7
-
-report:
-  max_read_depth: 250
-  stratify:
-    # if stratification is deactivated, one tabular report for all
-    # samples will be created.
-    activate: false
-    # select a sample sheet column for stratification, e.g. the tumorboard session
-    by-column: session
-
-params:
-  varlociraptor:
-    # add extra arguments for varlociraptor call
-    # For example, in case of panel data consider to omit certain bias estimations
-    # which might be misleading because all reads of an amplicon have the same start
-    # position, strand etc. (--omit-strand-bias, --omit-read-position-bias, 
-    # --omit-softclip-bias, --omit-read-orientation-bias).
-    call: ""
-    # Add extra arguments for varlociraptor preprocess. By default, we limit the depth to 200.
-    # Increase this value for panel sequencing!
-    preprocess: "--max-depth 200"
+calling:
+  delly:
+    activate: true
   freebayes:
-    min_alternate_fraction: 0.01 # Reduce for calling variants with lower VAFs
+    activate: true
+  # See http://snpeff.sourceforge.net/SnpSift.html#filter
+  filter:
+    revel_malign: >-
+      (False)
+
+
+annotations:
+  vcfs:
+    activate: true
+    # annotate with known variants from ensembl
+    known: resources/variation.vcf.gz
+    # add more external VCFs as needed
+    # cosmic: path/to/cosmic.vcf.gz
+  dgidb:
+    # annotate variants with drug interactions of affected genes
+    activate: false
+    # List of datasources for filtering dgidb entries
+    # Available sources can be found on http://dgidb.org/api/v2/interaction_sources.json
+    datasources:
+      - DrugBank
+  vep:
+    # Consider removing --everything if VEP is slow for you (e.g. for WGS), 
+    # and think carefully about which annotations you need.
+    params: --everything --check_existing
+    plugins:
+      # Add any plugin from https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html
+      # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
+      - LoFtool
+
+# printing of variants in a table format
+tables:
+  activate: true
+  output:
+    event_prob: true
+    observations: true
+  generate_excel: true
