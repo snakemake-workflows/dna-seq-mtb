@@ -43,7 +43,7 @@ species:
       inheritance:
         clonal:
           from: normal
-          somatic: false
+          somatic: true
       contamination:
         by: normal
         fraction: ?contamination()
