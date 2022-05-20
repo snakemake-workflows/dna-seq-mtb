@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.0.1...v1.1.0) (2022-05-20)
+
+
+### Features
+
+* update to dna-seq-varlociraptor 3.14.0 ([76b133a](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/76b133a7b2ed422cd8f8836965a9f96142352176))
+
 ### [1.0.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.0.0...v1.0.1) (2022-05-12)
 
 
