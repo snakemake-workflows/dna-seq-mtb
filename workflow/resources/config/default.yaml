@@ -318,7 +318,7 @@ calling:
         desc: |
           Somatic variants affecting cell cycle genes with low to high impact.
         labels:
-          gene set: cancer genes
+          gene set: cell cycle
         subcategory: somatic variants in gene sets and pathways
 
       dna_damage_response:
@@ -334,7 +334,7 @@ calling:
         desc: |
           Somatic variants affecting dna damage resonse genes with low to high impact.
         labels:
-          gene set: cancer genes
+          gene set: dna damage response
         subcategory: somatic variants in gene sets and pathways
 
       g1_topart:
@@ -350,7 +350,7 @@ calling:
         desc: |
           Somatic variants affecting G1 topart genes with low to high impact.
         labels:
-          gene set: cancer genes
+          gene set: G1 topart
         subcategory: somatic variants in gene sets and pathways
 
       tyrosine_kinases:
@@ -366,7 +366,7 @@ calling:
         desc: |
           Somatic variants affecting tyrosine kinases genes with low to high impact.
         labels:
-          gene set: cancer genes
+          gene set: tyrosine kinases
         subcategory: somatic variants in gene sets and pathways
 
 # If calc_consensus_reads is activated duplicates will be merged
