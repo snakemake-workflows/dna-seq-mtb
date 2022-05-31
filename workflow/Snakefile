@@ -15,11 +15,7 @@ module dna_seq_varlociraptor:
 use rule * from dna_seq_varlociraptor
 
 
-if "normal" not in dna_seq_varlociraptor.samples["alias"]:
-    del dna_seq_varlociraptor.config["calling"]["fdr-control"]["events"][
-        "loh_or_amplification"
-    ]
-else:
+if "normal"  in dna_seq_varlociraptor.samples["alias"]:
     tissue_counts = dna_seq_varlociraptor.samples.groupby("alias").size()
     if tissue_counts["normal"] != tissue_counts["tumor"]:
         raise WorkflowError(

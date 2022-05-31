@@ -1,13 +1,19 @@
 __definitions__:
   - |
+    def get_event_types():
+      event_types = ["somatic"]
+      if "normal" in samples["alias"]:
+        event_types += ["loh"]
+      return event_types
+  - |
     def get_events(event_type):
-        if event_type == "somatic_variants":
+        if event_type == "somatic":
           return ["somatic_tumor_high", "somatic_tumor_low"]
         if event_type == "loh":
           return ["loh", "loh_or_amplification"]
   - |
     def get_description(event_type):
-        if event_type == "somatic_variants":
+        if event_type == "somatic":
           return "somatic variants"
         if event_type == "loh":
           return "LOH or amplification of alt allele"
@@ -143,8 +149,8 @@ calling:
     threshold: 0.05
     local: true
     events:
-      ?for event_type in ["somatic_variants", "loh"]:
-        impact_moderate_novel_high_vaf:
+      ?for event_type in get_event_types():
+        ?f"{event_type}_impact_moderate_novel_high_vaf":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -163,7 +169,7 @@ calling:
             VAF: high
           subcategory: ?f"{get_description(event_type)} of uncertain significance"
 
-        impact_moderate_novel_low_vaf:
+        ?f"{event_type}_impact_moderate_novel_low_vaf":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -182,7 +188,7 @@ calling:
             VAF: low
           subcategory: ?f"{get_description(event_type)} of uncertain significance"
 
-        impact_high_novel_high_vaf:
+        ?f"{event_type}_impact_high_novel_high_vaf":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -201,7 +207,7 @@ calling:
             VAF: high
           subcategory: ?f"{get_description(event_type)} of uncertain significance"
 
-        impact_high_novel_low_vaf:
+        ?f"{event_type}_impact_high_novel_low_vaf":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -220,7 +226,7 @@ calling:
             VAF: low
           subcategory: ?f"{get_description(event_type)} of uncertain significance"
 
-        pathogenic_risk_factor_drug_response:
+        ?f"{event_type}_pathogenic_risk_factor_drug_response":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -236,7 +242,7 @@ calling:
             clinical significance: pathogenic, risk factor, or drug response
           subcategory: ?f"known {get_description(event_type)}"
         
-        splice_variants:
+        ?f"{event_type}_splice_variants":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -253,7 +259,7 @@ calling:
             consequence: splice
           subcategory: ?f"{get_description(event_type)} of uncertain significance"
 
-        cancer_genes:
+        ?f"{event_type}_cancer_genes":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -269,7 +275,7 @@ calling:
             gene set: cancer genes
           subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-        pi3k_pathway:
+        ?f"{event_type}_pi3k_pathway":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -285,7 +291,7 @@ calling:
             gene set: PI3K-AKT-mTOR pathway
           subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-        raf_pathway:
+        ?f"{event_type}_raf_pathway":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -301,7 +307,7 @@ calling:
             gene set: RAF-MEK-ERK pathway
           subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-        cell_cycle:
+        ?f"{event_type}_cell_cycle":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -317,7 +323,7 @@ calling:
             gene set: cell cycle
           subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-        dna_damage_response:
+        ?f"{event_type}_dna_damage_response":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -333,7 +339,7 @@ calling:
             gene set: dna damage response
           subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-        g1_topart:
+        ?f"{event_type}_g1_topart":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
@@ -349,7 +355,7 @@ calling:
             gene set: G1 topart
           subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-        tyrosine_kinases:
+        ?f"{event_type}_tyrosine_kinases":
           varlociraptor:
             ?for event in get_events(event_type):
               - ?event
