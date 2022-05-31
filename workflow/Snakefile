@@ -14,10 +14,13 @@ module dna_seq_varlociraptor:
 
 use rule * from dna_seq_varlociraptor
 
+
 if "normal" not in dna_seq_varlociraptor.samples["alias"].unique():
-    list_keys = list(dna_seq_varlociraptor.config["calling"]["fdr-control"]["events"].keys())
+    list_keys = list(
+        dna_seq_varlociraptor.config["calling"]["fdr-control"]["events"].keys()
+    )
     for k in list_keys:
-        if k.startswith('loh'):
+        if k.startswith("loh"):
             dna_seq_varlociraptor.config["calling"]["fdr-control"]["events"].pop(k)
 else:
     tissue_counts = dna_seq_varlociraptor.samples.groupby("alias").size()
