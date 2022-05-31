@@ -165,8 +165,8 @@ calling:
 
         impact_moderate_novel_low_vaf:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - impact_moderate
             - novel
@@ -184,8 +184,8 @@ calling:
 
         impact_high_novel_high_vaf:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - impact_high
             - novel
@@ -203,8 +203,8 @@ calling:
 
         impact_high_novel_low_vaf:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - impact_high
             - novel
@@ -222,8 +222,8 @@ calling:
 
         pathogenic_risk_factor_drug_response:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - pathogenic_risk_factor_drug_response
           sort:
@@ -238,8 +238,8 @@ calling:
         
         splice_variants:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - splice_mutation
             - revel_malign
@@ -255,8 +255,8 @@ calling:
 
         cancer_genes:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - cancer_relevant
             - cancer_genes
@@ -271,8 +271,8 @@ calling:
 
         pi3k_pathway:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - cancer_relevant
             - pi3k_pathway
@@ -287,8 +287,8 @@ calling:
 
         raf_pathway:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - cancer_relevant
             - raf_pathway
@@ -303,8 +303,8 @@ calling:
 
         cell_cycle:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - cancer_relevant
             - cell_cycle
@@ -319,8 +319,8 @@ calling:
 
         dna_damage_response:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - cancer_relevant
             - dna_damage_response
@@ -335,8 +335,8 @@ calling:
 
         g1_topart:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - cancer_relevant
             - g1_topart
@@ -351,8 +351,8 @@ calling:
 
         tyrosine_kinases:
           varlociraptor:
-            ?for event in events:
-            - ?event
+            ?for event in get_events(event_type):
+              - ?event
           filter:
             - cancer_relevant
             - tyrosine_kinases
