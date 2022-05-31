@@ -1,10 +1,7 @@
 __definitions__:
   - |
     def get_event_types():
-      event_types = ["somatic"]
-      if "normal" in samples["alias"]:
-        event_types += ["loh"]
-      return event_types
+      return ["somatic", "loh"]
   - |
     def get_events(event_type):
         if event_type == "somatic":
@@ -182,7 +179,7 @@ calling:
             - 'tumor: allele frequency'
             - revel
           desc: |
-            ?"Novel {get_description(event_type)} with moderate impact and low allele frequency."
+            ?f"Novel {get_description(event_type)} with moderate impact and low allele frequency."
           labels:
             impact: moderate
             VAF: low
