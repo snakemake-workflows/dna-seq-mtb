@@ -1,3 +1,17 @@
+__definitions__:
+  - |
+    def get_events(event_type):
+        if event_type == "somatic_variants":
+          return ["somatic_tumor_high", "somatic_tumor_low"]
+        if event_type == "loh":
+          return ["loh", "loh_or_amplification"]
+  - |
+    def get_description(event_type):
+        if event_type == "somatic_variants":
+          return "somatic variants"
+        if event_type == "loh":
+          return "LOH or amplification of alt allele"
+
 samples: config/samples.tsv
 
 units: config/units.tsv
@@ -129,241 +143,227 @@ calling:
     threshold: 0.05
     local: true
     events:
-      loh_or_amplification:
-        varlociraptor:
-          - loh
-          - loh_or_amplification
-        filter:
-          - loh_relevant
-        sort:
-          - impact
-          - revel
-        desc: |
-          Variants with loss of heterozygosity or strong somatic amplification of the alt allele.
-        labels:
-          event: LOH or amplification of alt allele
-        subcategory: loss of heterozygosity
+      ?for event_type in ["somatic_variants", "loh"]:
+        impact_moderate_novel_high_vaf:
+          varlociraptor:
+            ?for event in get_events(event_type):
+              - ?event
+          filter:
+            - impact_moderate
+            - novel
+            - revel_malign
+            - allele_frequency_high
+          sort:
+            - revel
+            - 'tumor: allele frequency'
+          desc: |
+            ?f"Novel {get_description(event_type)} with moderate impact and high allele frequency."
+          labels:
+            impact: moderate
+            VAF: high
+          subcategory: ?f"{get_description(event_type)} of uncertain significance"
 
-      impact_moderate_novel_high_vaf:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - impact_moderate
-          - novel
-          - revel_malign
-          - allele_frequency_high
-        sort:
-          - revel
-          - 'tumor: allele frequency'
-        desc: |
-          Novel somatic variants with moderate impact and high allele frequency.
-        labels:
-          impact: moderate
-          VAF: high
-        subcategory: somatic variants of uncertain significance
+        impact_moderate_novel_low_vaf:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - impact_moderate
+            - novel
+            - revel_malign
+            - allele_frequency_low
+          sort:
+            - 'tumor: allele frequency'
+            - revel
+          desc: |
+            ?"Novel {get_description(event_type)} with moderate impact and low allele frequency."
+          labels:
+            impact: moderate
+            VAF: low
+          subcategory: ?f"{get_description(event_type)} of uncertain significance"
 
-      impact_moderate_novel_low_vaf:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - impact_moderate
-          - novel
-          - revel_malign
-          - allele_frequency_low
-        sort:
-          - 'tumor: allele frequency'
-          - revel
-        desc: |
-          Novel somatic variants with moderate impact and low allele frequency.
-        labels:
-          impact: moderate
-          VAF: low
-        subcategory: somatic variants of uncertain significance
+        impact_high_novel_high_vaf:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - impact_high
+            - novel
+            - revel_malign
+            - allele_frequency_high
+          sort:
+            - revel
+            - 'tumor: allele frequency'
+          desc: |
+            ?f"Novel {get_description(event_type)} with high impact and high allele frequency."
+          labels:
+            impact: high
+            VAF: high
+          subcategory: ?f"{get_description(event_type)} of uncertain significance"
 
-      impact_high_novel_high_vaf:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - impact_high
-          - novel
-          - revel_malign
-          - allele_frequency_high
-        sort:
-          - revel
-          - 'tumor: allele frequency'
-        desc: |
-          Novel somatic variants with high impact and high allele frequency.
-        labels:
-          impact: high
-          VAF: high
-        subcategory: somatic variants of uncertain significance
+        impact_high_novel_low_vaf:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - impact_high
+            - novel
+            - revel_malign
+            - allele_frequency_low
+          sort:
+            - 'tumor: allele frequency'
+            - revel
+          desc: |
+            ?f"Novel {get_description(event_type)} with high impact and low allele frequency."
+          labels:
+            impact: high
+            VAF: low
+          subcategory: ?f"{get_description(event_type)} of uncertain significance"
 
-      impact_high_novel_low_vaf:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - impact_high
-          - novel
-          - revel_malign
-          - allele_frequency_low
-        sort:
-          - 'tumor: allele frequency'
-          - revel
-        desc: |
-          Novel somatic variants with high impact and low allele frequency.
-        labels:
-          impact: high
-          VAF: low
-        subcategory: somatic variants of uncertain significance
+        pathogenic_risk_factor_drug_response:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - pathogenic_risk_factor_drug_response
+          sort:
+            - impact
+            - revel
+            - 'tumor: allele frequency'
+          desc: |
+            ?f"{get_description(event_type)} being pathogenic or risk factor high."
+          labels:
+            clinical significance: pathogenic, risk factor, or drug response
+          subcategory: ?f"known {get_description(event_type)}"
+        
+        splice_variants:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - splice_mutation
+            - revel_malign
+            - novel
+          sort:
+            - impact
+            - revel
+          desc: |
+            Somatic splice mutations
+          labels:
+            consequence: splice
+          subcategory: ?f"{get_description(event_type)} of uncertain significance"
 
-      pathogenic_risk_factor_drug_response:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - pathogenic_risk_factor_drug_response
-        sort:
-          - impact
-          - revel
-          - 'tumor: allele frequency'
-        desc: |
-          Somatic variants being pathogenic or risk factor high.
-        labels:
-          clinical significance: pathogenic, risk factor, or drug response
-        subcategory: known somatic variants
-      
-      splice_variants:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - splice_mutation
-          - revel_malign
-          - novel
-        sort:
-          - impact
-          - revel
-        desc: |
-          Somatic splice mutations
-        labels:
-          consequence: splice
-        subcategory: somatic variants of uncertain significance
+        cancer_genes:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - cancer_relevant
+            - cancer_genes
+          sort:
+            - impact
+            - revel
+          desc: |
+            Somatic variants affecting known cancer genes with low to high impact.
+          labels:
+            gene set: cancer genes
+          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-      cancer_genes:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - cancer_relevant
-          - cancer_genes
-        sort:
-          - impact
-          - revel
-        desc: |
-          Somatic variants affecting known cancer genes with low to high impact.
-        labels:
-          gene set: cancer genes
-        subcategory: somatic variants in gene sets and pathways
+        pi3k_pathway:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - cancer_relevant
+            - pi3k_pathway
+          sort:
+            - impact
+            - revel
+          desc: |
+            ?f"{get_description(event_type)} affecting PI3K-AKT-mTOR pathway genes, sorted by impact and revel scores while discarding synonymous variants."
+          labels:
+            gene set: PI3K-AKT-mTOR pathway
+          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-      pi3k_pathway:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - cancer_relevant
-          - pi3k_pathway
-        sort:
-          - impact
-          - revel
-        desc: |
-          Somatic variants affecting PI3K-AKT-mTOR pathway genes, sorted by impact and revel scores while discarding synonymous variants.
-        labels:
-          gene set: PI3K-AKT-mTOR pathway
-        subcategory: somatic variants in gene sets and pathways
+        raf_pathway:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - cancer_relevant
+            - raf_pathway
+          sort:
+            - impact
+            - revel
+          desc: |
+            ?f"{get_description(event_type)} affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants."
+          labels:
+            gene set: RAF-MEK-ERK pathway
+          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-      raf_pathway:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - cancer_relevant
-          - raf_pathway
-        sort:
-          - impact
-          - revel
-        desc: |
-          Somatic variants affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants.
-        labels:
-          gene set: RAF-MEK-ERK pathway
-        subcategory: somatic variants in gene sets and pathways
+        cell_cycle:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - cancer_relevant
+            - cell_cycle
+          sort:
+            - impact
+            - revel
+          desc: |
+            ?f"{get_description(event_type)} affecting cell cycle genes with low to high impact."
+          labels:
+            gene set: cell cycle
+          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-      cell_cycle:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - cancer_relevant
-          - cell_cycle
-        sort:
-          - impact
-          - revel
-        desc: |
-          Somatic variants affecting cell cycle genes with low to high impact.
-        labels:
-          gene set: cell cycle
-        subcategory: somatic variants in gene sets and pathways
+        dna_damage_response:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - cancer_relevant
+            - dna_damage_response
+          sort:
+            - impact
+            - revel
+          desc: |
+            ?f"{get_description(event_type)} affecting dna damage resonse genes with low to high impact."
+          labels:
+            gene set: dna damage response
+          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-      dna_damage_response:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - cancer_relevant
-          - dna_damage_response
-        sort:
-          - impact
-          - revel
-        desc: |
-          Somatic variants affecting dna damage resonse genes with low to high impact.
-        labels:
-          gene set: dna damage response
-        subcategory: somatic variants in gene sets and pathways
+        g1_topart:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - cancer_relevant
+            - g1_topart
+          sort:
+            - impact
+            - revel
+          desc: |
+            ?f"{get_description(event_type)} affecting G1 topart genes with low to high impact."
+          labels:
+            gene set: G1 topart
+          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
-      g1_topart:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - cancer_relevant
-          - g1_topart
-        sort:
-          - impact
-          - revel
-        desc: |
-          Somatic variants affecting G1 topart genes with low to high impact.
-        labels:
-          gene set: G1 topart
-        subcategory: somatic variants in gene sets and pathways
-
-      tyrosine_kinases:
-        varlociraptor:
-          - somatic_tumor_high
-          - somatic_tumor_low
-        filter:
-          - cancer_relevant
-          - tyrosine_kinases
-        sort:
-          - impact
-          - revel
-        desc: |
-          Somatic variants affecting tyrosine kinases genes with low to high impact.
-        labels:
-          gene set: tyrosine kinases
-        subcategory: somatic variants in gene sets and pathways
+        tyrosine_kinases:
+          varlociraptor:
+            ?for event in events:
+            - ?event
+          filter:
+            - cancer_relevant
+            - tyrosine_kinases
+          sort:
+            - impact
+            - revel
+          desc: |
+            ?f"{get_description(event_type)} affecting tyrosine kinases genes with low to high impact."
+          labels:
+            gene set: tyrosine kinases
+          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
 
 # If calc_consensus_reads is activated duplicates will be merged
 remove_duplicates:
