@@ -183,7 +183,7 @@ calling:
           labels:
             impact: moderate
             VAF: low
-          subcategory: ?f"{get_description(event_type)} of uncertain significance"
+          subcategory: ?f"{get_description(event_type).capitalize()} of uncertain significance"
 
         ?f"{event_type}_impact_high_novel_high_vaf":
           varlociraptor:
@@ -202,7 +202,7 @@ calling:
           labels:
             impact: high
             VAF: high
-          subcategory: ?f"{get_description(event_type)} of uncertain significance"
+          subcategory: ?f"{get_description(event_type).capitalize()} of uncertain significance"
 
         ?f"{event_type}_impact_high_novel_low_vaf":
           varlociraptor:
@@ -221,7 +221,7 @@ calling:
           labels:
             impact: high
             VAF: low
-          subcategory: ?f"{get_description(event_type)} of uncertain significance"
+          subcategory: ?f"{get_description(event_type).capitalize()} of uncertain significance"
 
         ?f"{event_type}_pathogenic_risk_factor_drug_response":
           varlociraptor:
@@ -234,7 +234,7 @@ calling:
             - revel
             - 'tumor: allele frequency'
           desc: |
-            ?f"{get_description(event_type)} being pathogenic or risk factor high."
+            ?f"{get_description(event_type).capitalize()} being pathogenic or risk factor high."
           labels:
             clinical significance: pathogenic, risk factor, or drug response
           subcategory: ?f"known {get_description(event_type)}"
@@ -250,11 +250,10 @@ calling:
           sort:
             - impact
             - revel
-          desc: |
-            Somatic splice mutations
+          desc: ?f"{get_description(event_type).capitalize()} close to splice sites"
           labels:
             consequence: splice
-          subcategory: ?f"{get_description(event_type)} of uncertain significance"
+          subcategory: ?f"{get_description(event_type).capitalize()} of uncertain significance"
 
         ?f"{event_type}_cancer_genes":
           varlociraptor:
@@ -266,11 +265,10 @@ calling:
           sort:
             - impact
             - revel
-          desc: |
-            Somatic variants affecting known cancer genes with low to high impact.
+          desc: ?f"{get_description(event_type).capitalize()} affecting known cancer genes with low to high impact."
           labels:
             gene set: cancer genes
-          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
+          subcategory: ?f"{get_description(event_type).capitalize()} in gene sets and pathways"
 
         ?f"{event_type}_pi3k_pathway":
           varlociraptor:
@@ -283,10 +281,10 @@ calling:
             - impact
             - revel
           desc: |
-            ?f"{get_description(event_type)} affecting PI3K-AKT-mTOR pathway genes, sorted by impact and revel scores while discarding synonymous variants."
+            ?f"{get_description(event_type).capitalize()} affecting PI3K-AKT-mTOR pathway genes, sorted by impact and revel scores while discarding synonymous variants."
           labels:
             gene set: PI3K-AKT-mTOR pathway
-          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
+          subcategory: ?f"{get_description(event_type).capitalize()} in gene sets and pathways"
 
         ?f"{event_type}_raf_pathway":
           varlociraptor:
@@ -299,10 +297,10 @@ calling:
             - impact
             - revel
           desc: |
-            ?f"{get_description(event_type)} affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants."
+            ?f"{get_description(event_type).capitalize()} affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants."
           labels:
             gene set: RAF-MEK-ERK pathway
-          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
+          subcategory: ?f"{get_description(event_type).capitalize()} in gene sets and pathways"
 
         ?f"{event_type}_cell_cycle":
           varlociraptor:
@@ -315,10 +313,10 @@ calling:
             - impact
             - revel
           desc: |
-            ?f"{get_description(event_type)} affecting cell cycle genes with low to high impact."
+            ?f"{get_description(event_type).capitalize()} affecting cell cycle genes with low to high impact."
           labels:
             gene set: cell cycle
-          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
+          subcategory: ?f"{get_description(event_type).capitalize()} in gene sets and pathways"
 
         ?f"{event_type}_dna_damage_response":
           varlociraptor:
@@ -331,7 +329,7 @@ calling:
             - impact
             - revel
           desc: |
-            ?f"{get_description(event_type)} affecting dna damage resonse genes with low to high impact."
+            ?f"{get_description(event_type).capitalize()} affecting dna damage resonse genes with low to high impact."
           labels:
             gene set: dna damage response
           subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
@@ -347,7 +345,7 @@ calling:
             - impact
             - revel
           desc: |
-            ?f"{get_description(event_type)} affecting G1 topart genes with low to high impact."
+            ?f"{get_description(event_type).capitalize()} affecting G1 topart genes with low to high impact."
           labels:
             gene set: G1 topart
           subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
@@ -363,10 +361,10 @@ calling:
             - impact
             - revel
           desc: |
-            ?f"{get_description(event_type)} affecting tyrosine kinases genes with low to high impact."
+            ?f"{get_description(event_type).capitalize()} affecting tyrosine kinases genes with low to high impact."
           labels:
             gene set: tyrosine kinases
-          subcategory: ?f"{get_description(event_type)} in gene sets and pathways"
+          subcategory: ?f"{get_description(event_type).capitalize()} in gene sets and pathways"
 
 # If calc_consensus_reads is activated duplicates will be merged
 remove_duplicates:
