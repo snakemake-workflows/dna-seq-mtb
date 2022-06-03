@@ -14,7 +14,7 @@ module dna_seq_varlociraptor:
 
 use rule * from dna_seq_varlociraptor
 
-
+# Remove loh-events in case no normal sample is present
 if "normal" not in dna_seq_varlociraptor.samples["alias"].unique():
     list_keys = list(
         dna_seq_varlociraptor.config["calling"]["fdr-control"]["events"].keys()
