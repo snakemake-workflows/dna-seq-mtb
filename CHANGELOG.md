@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.1.0...v1.2.0) (2022-06-03)
+
+
+### Features
+
+* Render config for loh and somatic variants ([#6](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/6)) ([a4b2307](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/a4b23078908ff90df0543dc3be71264e22354e52))
+
 ## [1.1.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.0.1...v1.1.0) (2022-05-20)
 
 
