@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.2.0...v1.2.1) (2022-08-08)
+
+
+### Bug Fixes
+
+* add reference to MIRACUM-Pipe in report description. ([06b72e2](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/06b72e2952a6194b94ef01d763266d78dff51f00))
+* use latest dna-seq-varlociraptor release ([d0a80f1](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/d0a80f1618b4ce747ef39799a7195fd5439c8643))
+
 ## [1.2.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.1.0...v1.2.0) (2022-06-03)
 
 
