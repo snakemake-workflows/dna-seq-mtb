@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.2.0...v1.3.0) (2022-10-04)
+
+
+### Features
+
+* update to dna-seq-varlociraptor 3.18.1 ([#10](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/10)) ([955b835](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/955b8356404b73b524918fe892a502e920721dd2))
+
+
+### Bug Fixes
+
+* add reference to MIRACUM-Pipe in report description. ([06b72e2](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/06b72e2952a6194b94ef01d763266d78dff51f00))
+* allow somatic-normal mutations above VAF 0.5 ([#8](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/8)) ([8dacb93](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/8dacb93c51b1c7ad9482369cbeea0aacadff5fc9))
+* use latest dna-seq-varlociraptor release ([d0a80f1](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/d0a80f1618b4ce747ef39799a7195fd5439c8643))
+
 ## [1.2.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.1.0...v1.2.0) (2022-06-03)
 
 
