@@ -51,6 +51,9 @@ mutational_burden:
   # or curve (stratified curve)
   mode:
     - curve
+  events:
+    - somatic_tumor_low
+    - somatic_tumor_high
 
 # printing of variants in a matrix, sorted by recurrence
 report:
