@@ -6,11 +6,15 @@
 # Note that sample names here must correspond to the alias column in the sample sheet.
 
 __definitions__:
-  - | 
+  - import pandas as pd
+  - |
     samples = params.samples.set_index("alias")
     if "ffpe" not in samples.columns:
       samples["ffpe"] = pd.NA
   - sex = samples.loc["tumor", "sex"]
+  - |
+    if pd.isna(sex) or sex not in ["male", "female"]:
+        raise ValueError(f"Unsupported sex in sample sheet (also ensure that sample sheet is entirely tab separated): {sex}")
   - is_ffpe = samples.loc["tumor", "ffpe"]
   - |
     def contamination():
@@ -35,7 +39,6 @@ species:
     ffpe_subst: "C>T | G>A"
 
 ?if "normal" in samples.index:
-
   samples:
     tumor:
       sex: ?sex
@@ -64,7 +67,6 @@ species:
       somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1["
 
 ?else:
-
   samples:
     tumor:
       resolution: 0.01
@@ -76,7 +78,7 @@ species:
     normal:
       universe: "0.0 | 0.5 | 1.0"
       sex: ?sex
-  
+
   events:
     somatic_tumor_high: "normal:0.0 & tumor:[0.1,1.0]"
     germline: "(normal:0.5 & tumor:0.5) | (normal:1.0 & tumor:1.0)"
@@ -85,4 +87,3 @@ species:
       somatic_tumor_low: "normal:0.0 & ((($ffpe_subst) & tumor:]0.05,0.1[) | (!($ffpe_subst) & tumor:]0.0,0.1[))"
     ?else:
       somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1["
-
