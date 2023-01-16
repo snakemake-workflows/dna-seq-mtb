@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.3.3](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.3.2...v1.3.3) (2023-01-16)
+
+
+### Bug Fixes
+
+* check whether sex is correctly specified in sample sheet ([#18](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/18)) ([5e03815](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/5e0381530128ea9c83ae3c7ea0075df5851bd269))
+* properly update config in case it is given via a module definition ([#14](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/14)) ([d35b8b3](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/d35b8b35cee3f1c2fa29e4aaadae63d86df07998))
+
 ### [1.3.2](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.3.1...v1.3.2) (2023-01-15)
 
 
