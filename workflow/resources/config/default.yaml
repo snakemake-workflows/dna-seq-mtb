@@ -1,8 +1,8 @@
 __definitions__:
   - |
     def get_events(event_type):
-        if event_type == "somatic":
-          return ["somatic_tumor_high", "somatic_tumor_low"]
+        if event_type == "somatic_or_germline":
+          return ["somatic_tumor_high", "somatic_tumor_low", "germline"]
         if event_type == "loh":
           return ["loh", "loh_or_amplification"]
   - |
@@ -146,10 +146,9 @@ calling:
     threshold: 0.05
     local: true
     events:
-      ?for event_type in ["somatic", "loh"]:
+      ?for event_type in ["somatic_or_germline", "loh"]:
         ?f"{event_type}_impact_moderate_novel_high_vaf":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - impact_moderate
             - novel
@@ -157,7 +156,7 @@ calling:
             - allele_frequency_high
           sort:
             - revel
-            - 'tumor: allele frequency'
+            - "tumor: allele frequency"
           desc: |
             ?f"Novel {get_description(event_type)} with moderate impact and high allele frequency."
           labels:
@@ -167,15 +166,14 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_impact_moderate_novel_low_vaf":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - impact_moderate
             - novel
             - revel_malign
             - allele_frequency_low
           sort:
-            - 'tumor: allele frequency'
+            - "tumor: allele frequency"
             - revel
           desc: |
             ?f"Novel {get_description(event_type)} with moderate impact and low allele frequency."
@@ -186,8 +184,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_impact_high_novel_high_vaf":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - impact_high
             - novel
@@ -195,7 +192,7 @@ calling:
             - allele_frequency_high
           sort:
             - revel
-            - 'tumor: allele frequency'
+            - "tumor: allele frequency"
           desc: |
             ?f"Novel {get_description(event_type)} with high impact and high allele frequency."
           labels:
@@ -205,15 +202,14 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_impact_high_novel_low_vaf":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - impact_high
             - novel
             - revel_malign
             - allele_frequency_low
           sort:
-            - 'tumor: allele frequency'
+            - "tumor: allele frequency"
             - revel
           desc: |
             ?f"Novel {get_description(event_type)} with high impact and low allele frequency."
@@ -224,14 +220,13 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_pathogenic_risk_factor_drug_response":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - pathogenic_risk_factor_drug_response
           sort:
             - impact
             - revel
-            - 'tumor: allele frequency'
+            - "tumor: allele frequency"
           desc: |
             ?f"{get_description(event_type)} being pathogenic or risk factor high."
           labels:
@@ -239,10 +234,9 @@ calling:
             impact: low, moderate, high
             VAF: any
           subcategory: ?get_description(event_type)
-        
+
         ?f"{event_type}_splice_variants":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - splice_mutation
             - revel_malign
@@ -258,8 +252,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cancer_genes":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
             - cancer_genes
@@ -274,8 +267,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_pi3k_pathway":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
             - pi3k_pathway
@@ -291,8 +283,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_raf_pathway":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
             - raf_pathway
@@ -308,8 +299,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cell_cycle":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
             - cell_cycle
@@ -325,8 +315,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_dna_damage_response":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
             - dna_damage_response
@@ -342,8 +331,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_g1_topart":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
             - g1_topart
@@ -359,8 +347,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_tyrosine_kinases":
-          varlociraptor:
-            ?get_events(event_type)
+          varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
             - tyrosine_kinases
@@ -399,7 +386,7 @@ annotations:
     datasources:
       - DrugBank
   vep:
-    # Consider removing --everything if VEP is slow for you (e.g. for WGS), 
+    # Consider removing --everything if VEP is slow for you (e.g. for WGS),
     # and think carefully about which annotations you need.
     params: --everything --check_existing
     plugins:
@@ -419,7 +406,7 @@ params:
     # add extra arguments for varlociraptor call
     # For example, in case of panel data consider to omit certain bias estimations
     # which might be misleading because all reads of an amplicon have the sample start
-    # position, strand etc. (--omit-strand-bias, --omit-read-position-bias, 
+    # position, strand etc. (--omit-strand-bias, --omit-read-position-bias,
     # --omit-softclip-bias, --omit-read-orientation-bias).
     call: ""
     # Add extra arguments for varlociraptor preprocess. By default, we limit the depth to 200.
