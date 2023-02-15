@@ -95,7 +95,9 @@ calling:
     allele_frequency_low: >-
       FORMAT['AF']['tumor'] <= 0.2
     revel_malign: >-
-      (ANN['REVEL'] is NA or ANN['REVEL'] > 0.5)
+      (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
+    revel_benign: >-
+      (ANN['REVEL'] is not NA and ANN['REVEL'] < 0.5)
     impact_moderate: >-
       ANN['IMPACT'] == 'MODERATE'
     impact_high: >-
@@ -223,12 +225,30 @@ calling:
           varlociraptor: ?get_events(event_type)
           filter:
             - pathogenic_risk_factor_drug_response
+            - revel_malign
           sort:
             - impact
             - revel
             - "tumor: allele frequency"
           desc: |
-            ?f"{get_description(event_type)} being pathogenic or risk factor high."
+            ?f"{get_description(event_type)} being pathogenic or risk factor high and a revel score >= 0.5 if available."
+          labels:
+            callset: pathogenic, risk factor, or drug response
+            impact: low, moderate, high
+            VAF: any
+          subcategory: ?get_description(event_type)
+
+        ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response":
+          varlociraptor: ?get_events(event_type)
+          filter:
+            - pathogenic_risk_factor_drug_response
+            - revel_benign
+          sort:
+            - impact
+            - revel
+            - "tumor: allele frequency"
+          desc: |
+            ?f"{get_description(event_type)} being pathogenic or risk factor high but having a weak revel score."
           labels:
             callset: pathogenic, risk factor, or drug response
             impact: low, moderate, high
