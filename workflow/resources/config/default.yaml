@@ -72,6 +72,7 @@ tables:
   output:
     event_prob: true
     observations: true
+    short_observations: true
     annotation_fields:
       - REVEL
   generate_excel: true
@@ -91,9 +92,9 @@ calling:
       ) and
       not ('intron_variant' in ANN['Consequence'] and not 'splice_region_variant' in ANN['Consequence'])
     allele_frequency_high: >-
-      FORMAT['AF']['tumor'] > 0.2
+      FORMAT['AF']['tumor'] >= 0.05
     allele_frequency_low: >-
-      FORMAT['AF']['tumor'] <= 0.2
+      FORMAT['AF']['tumor'] < 0.05
     revel_malign: >-
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     revel_benign: >-
@@ -149,238 +150,214 @@ calling:
     local: true
     events:
       ?for event_type in ["somatic_or_germline", "loh"]:
-        ?f"{event_type}_impact_moderate_novel_high_vaf":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - impact_moderate
-            - novel
-            - revel_malign
-            - allele_frequency_high
-          sort:
-            - revel
-            - "tumor: allele frequency"
-          desc: |
-            ?f"Novel {get_description(event_type)} with moderate impact and high allele frequency."
-          labels:
-            callset: VUS
-            impact: moderate
-            VAF: high
-          subcategory: ?get_description(event_type)
+        ?for allele_frequency in ["high", "low"]:
+          ?f"{event_type}_impact_moderate_novel_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - impact_moderate
+              - novel
+              - revel_malign
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - revel
+              - "tumor: allele frequency"
+            desc: |
+              ?f"Novel {get_description(event_type)} with moderate impact and {allele_frequency} allele frequency."
+            labels:
+              callset: VUS
+              impact: moderate
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_impact_moderate_novel_low_vaf":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - impact_moderate
-            - novel
-            - revel_malign
-            - allele_frequency_low
-          sort:
-            - "tumor: allele frequency"
-            - revel
-          desc: |
-            ?f"Novel {get_description(event_type)} with moderate impact and low allele frequency."
-          labels:
-            callset: VUS
-            impact: moderate
-            VAF: low
-          subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_impact_high_novel_high_vaf":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - impact_high
-            - novel
-            - revel_malign
-            - allele_frequency_high
-          sort:
-            - revel
-            - "tumor: allele frequency"
-          desc: |
-            ?f"Novel {get_description(event_type)} with high impact and high allele frequency."
-          labels:
-            callset: VUS
-            impact: high
-            VAF: high
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_impact_high_novel_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - impact_high
+              - novel
+              - revel_malign
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - revel
+              - "tumor: allele frequency"
+            desc: |
+              ?f"Novel {get_description(event_type)} with high impact and {allele_frequency} allele frequency."
+            labels:
+              callset: VUS
+              impact: high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_impact_high_novel_low_vaf":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - impact_high
-            - novel
-            - revel_malign
-            - allele_frequency_low
-          sort:
-            - "tumor: allele frequency"
-            - revel
-          desc: |
-            ?f"Novel {get_description(event_type)} with high impact and low allele frequency."
-          labels:
-            callset: VUS
-            impact: high
-            VAF: low
-          subcategory: ?get_description(event_type)
-
-        ?f"{event_type}_pathogenic_risk_factor_drug_response":
+        ?f"{event_type}_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
           varlociraptor: ?get_events(event_type)
           filter:
             - pathogenic_risk_factor_drug_response
             - revel_malign
+            - ?f"allele_frequency_{allele_frequency}"
           sort:
             - impact
             - revel
             - "tumor: allele frequency"
           desc: |
-            ?f"{get_description(event_type)} being pathogenic or risk factor high and a revel score >= 0.5 if available."
+            ?f"{get_description(event_type)} being pathogenic or risk factor high, having {allele_frequency} allele frequency and a revel score >= 0.5 if available."
           labels:
             callset: pathogenic, risk factor, or drug response
             impact: low, moderate, high
-            VAF: any
+            VAF: ?allele_frequency
           subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response":
+        ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
           varlociraptor: ?get_events(event_type)
           filter:
             - pathogenic_risk_factor_drug_response
             - revel_benign
+            - ?f"allele_frequency_{allele_frequency}"
           sort:
             - impact
             - revel
             - "tumor: allele frequency"
           desc: |
-            ?f"{get_description(event_type)} being pathogenic or risk factor high but having a weak revel score."
+            ?f"{get_description(event_type)} being pathogenic or risk factor high and {allele_frequency} allele frequency but having a weak revel score."
           labels:
             callset: pathogenic, risk factor, or drug response
             impact: low, moderate, high
-            VAF: any
+            VAF: ?allele_frequency
           subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_splice_variants":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - splice_mutation
-            - revel_malign
-            - novel
-          sort:
-            - impact
-            - revel
-          desc: ?f"{get_description(event_type)} close to splice sites"
-          labels:
-            callset: splice site variants
-            impact: any
-            VAF: any
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_splice_variants_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - splice_mutation
+              - revel_malign
+              - novel
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+            desc: ?f"{get_description(event_type)} close to splice sites and {allele_frequency} allele frequency."
+            labels:
+              callset: splice site variants
+              impact: any
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_cancer_genes":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - cancer_relevant
-            - cancer_genes
-          sort:
-            - impact
-            - revel
-          desc: ?f"{get_description(event_type)} affecting known cancer genes with low to high impact."
-          labels:
-            callset: cancer genes
-            impact: low, moderate, high
-            VAF: any
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_cancer_genes_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - cancer_relevant
+              - cancer_genes
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+            desc: ?f"{get_description(event_type)} affecting known cancer genes with low to high impact and {allele_frequency} allele frequency."
+            labels:
+              callset: cancer genes
+              impact: low, moderate, high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_pi3k_pathway":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - cancer_relevant
-            - pi3k_pathway
-          sort:
-            - impact
-            - revel
-          desc: |
-            ?f"{get_description(event_type)} affecting PI3K-AKT-mTOR pathway genes, sorted by impact and revel scores while discarding synonymous variants."
-          labels:
-            callset: PI3K-AKT-mTOR pathway
-            impact: low, moderate, high
-            VAF: any
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_pi3k_pathway_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - cancer_relevant
+              - pi3k_pathway
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+            desc: |
+              ?f"{get_description(event_type)} affecting PI3K-AKT-mTOR pathway genes, sorted by impact and revel scores while discarding synonymous variants and {allele_frequency} allele frequency."
+            labels:
+              callset: PI3K-AKT-mTOR pathway
+              impact: low, moderate, high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_raf_pathway":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - cancer_relevant
-            - raf_pathway
-          sort:
-            - impact
-            - revel
-          desc: |
-            ?f"{get_description(event_type)} affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants."
-          labels:
-            callset: RAF-MEK-ERK pathway
-            impact: low, moderate, high
-            VAF: any
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_raf_pathway_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - cancer_relevant
+              - raf_pathway
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+            desc: |
+              ?f"{get_description(event_type)} affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants and {allele_frequency} allele frequency."
+            labels:
+              callset: RAF-MEK-ERK pathway
+              impact: low, moderate, high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_cell_cycle":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - cancer_relevant
-            - cell_cycle
-          sort:
-            - impact
-            - revel
-          desc: |
-            ?f"{get_description(event_type)} affecting cell cycle genes with low to high impact."
-          labels:
-            callset: cell cycle
-            impact: low, moderate, high
-            VAF: any
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_cell_cycle_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - cancer_relevant
+              - cell_cycle
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+            desc: |
+              ?f"{get_description(event_type)} affecting cell cycle genes with low to high impact and {allele_frequency} allele frequency."
+            labels:
+              callset: cell cycle
+              impact: low, moderate, high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_dna_damage_response":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - cancer_relevant
-            - dna_damage_response
-          sort:
-            - impact
-            - revel
-          desc: |
-            ?f"{get_description(event_type)} affecting dna damage resonse genes with low to high impact."
-          labels:
-            callset: dna damage response
-            impact: low, moderate, high
-            VAF: any
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_dna_damage_response_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - cancer_relevant
+              - dna_damage_response
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+            desc: |
+              ?f"{get_description(event_type)} affecting dna damage resonse genes with low to high impact and {allele_frequency} allele frequency."
+            labels:
+              callset: dna damage response
+              impact: low, moderate, high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_g1_topart":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - cancer_relevant
-            - g1_topart
-          sort:
-            - impact
-            - revel
-          desc: |
-            ?f"{get_description(event_type)} affecting G1 topart genes with low to high impact."
-          labels:
-            callset: G1 topart
-            impact: low, moderate, high
-            VAF: any
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_g1_topart_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - cancer_relevant
+              - g1_topart
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+            desc: |
+              ?f"{get_description(event_type)} affecting G1 topart genes with low to high impact and {allele_frequency} allele frequency."
+            labels:
+              callset: G1 topart
+              impact: low, moderate, high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_tyrosine_kinases":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - cancer_relevant
-            - tyrosine_kinases
-          sort:
-            - impact
-            - revel
-          desc: |
-            ?f"{get_description(event_type)} affecting tyrosine kinases genes with low to high impact."
-          labels:
-            callset: tyrosine kinases
-            impact: low, moderate, high
-            VAF: any
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_tyrosine_kinases_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - cancer_relevant
+              - tyrosine_kinases
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+            desc: |
+              ?f"{get_description(event_type)} affecting tyrosine kinases genes with low to high impact and {allele_frequency} allele frequency."
+            labels:
+              callset: tyrosine kinases
+              impact: low, moderate, high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
 # If calc_consensus_reads is activated duplicates will be merged
 remove_duplicates:

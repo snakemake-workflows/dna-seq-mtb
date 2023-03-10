@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.3.4](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.3.3...v1.3.4) (2023-02-15)
+
+
+### Bug Fixes
+
+* also display germline events ([87a413f](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/87a413f54737e41d342ecc1ec666beec76a6ad47))
+
+
+### Performance Improvements
+
+* update to dna-seq-varlociraptor 3.20.1
+
 ### [1.3.3](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.3.2...v1.3.3) (2023-01-16)
 
 
