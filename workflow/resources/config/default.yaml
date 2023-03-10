@@ -188,41 +188,41 @@ calling:
               VAF: ?allele_frequency
             subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - pathogenic_risk_factor_drug_response
-            - revel_malign
-            - ?f"allele_frequency_{allele_frequency}"
-          sort:
-            - impact
-            - revel
-            - "tumor: allele frequency"
-          desc: |
-            ?f"{get_description(event_type)} being pathogenic or risk factor high, having {allele_frequency} allele frequency and a revel score >= 0.5 if available."
-          labels:
-            callset: pathogenic, risk factor, or drug response
-            impact: low, moderate, high
-            VAF: ?allele_frequency
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - pathogenic_risk_factor_drug_response
+              - revel_malign
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+              - "tumor: allele frequency"
+            desc: |
+              ?f"{get_description(event_type)} being pathogenic or risk factor high, having {allele_frequency} allele frequency and a revel score >= 0.5 if available."
+            labels:
+              callset: pathogenic, risk factor, or drug response
+              impact: low, moderate, high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
-        ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
-          varlociraptor: ?get_events(event_type)
-          filter:
-            - pathogenic_risk_factor_drug_response
-            - revel_benign
-            - ?f"allele_frequency_{allele_frequency}"
-          sort:
-            - impact
-            - revel
-            - "tumor: allele frequency"
-          desc: |
-            ?f"{get_description(event_type)} being pathogenic or risk factor high and {allele_frequency} allele frequency but having a weak revel score."
-          labels:
-            callset: pathogenic, risk factor, or drug response
-            impact: low, moderate, high
-            VAF: ?allele_frequency
-          subcategory: ?get_description(event_type)
+          ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - pathogenic_risk_factor_drug_response
+              - revel_benign
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+              - "tumor: allele frequency"
+            desc: |
+              ?f"{get_description(event_type)} being pathogenic or risk factor high and {allele_frequency} allele frequency but having a weak revel score."
+            labels:
+              callset: pathogenic, risk factor, or drug response
+              impact: low, moderate, high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
 
           ?f"{event_type}_splice_variants_{allele_frequency}_vaf":
             varlociraptor: ?get_events(event_type)
