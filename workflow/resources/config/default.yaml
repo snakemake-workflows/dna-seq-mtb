@@ -108,9 +108,10 @@ calling:
     pathogenic_risk_factor_drug_response: >-
       (not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
-    pathogenic_likely_pathogenic_risk_factor_drug_response: >-
-      (not {'risk_factor', 'pathogenic', 'likely_pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
-      (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
+    potentially_pathogenic: >-
+      (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (
+      ((not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is not NA and ANN['REVEL'] < 0.5) or
+      'likely_pathogenic' in ANN['CLIN_SIG'])
     loh_relevant: >-
       ANN['IMPACT'] != 'LOW' and ANN['IMPACT'] != 'MODIFIER' and
       not (set(["benign", "likely benign"]) > set(ANN['CLIN_SIG']) and "benign" in ANN['CLIN_SIG'])
@@ -212,8 +213,7 @@ calling:
           ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
             varlociraptor: ?get_events(event_type)
             filter:
-              - pathogenic_likely_pathogenic_risk_factor_drug_response
-              - revel_benign
+              - potentially_pathogenic
               - ?f"allele_frequency_{allele_frequency}"
             sort:
               - impact
