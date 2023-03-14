@@ -7,8 +7,8 @@ __definitions__:
           return ["loh", "loh_or_amplification"]
   - |
     def get_description(event_type):
-        if event_type == "somatic":
-          return "somatic variants"
+        if event_type == "somatic_or_germline":
+          return "somatic or germline variants"
         if event_type == "loh":
           return "LOH or amplification of alt allele"
 
@@ -219,7 +219,7 @@ calling:
             desc: |
               ?f"{get_description(event_type)} being pathogenic or risk factor high and {allele_frequency} allele frequency but having a weak revel score."
             labels:
-              callset: pathogenic, risk factor, or drug response
+              callset: potentially pathogenic, risk factor, or drug response
               impact: low, moderate, high
               VAF: ?allele_frequency
             subcategory: ?get_description(event_type)
