@@ -106,6 +106,9 @@ calling:
     novel: >-
       not (ID and ID.startswith('rs'))
     pathogenic_risk_factor_drug_response: >-
+      (not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
+      (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
+    pathogenic_likely_pathogenic_risk_factor_drug_response: >-
       (not {'risk_factor', 'pathogenic', 'likely_pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
     loh_relevant: >-
@@ -209,7 +212,7 @@ calling:
           ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
             varlociraptor: ?get_events(event_type)
             filter:
-              - pathogenic_risk_factor_drug_response
+              - pathogenic_likely_pathogenic_risk_factor_drug_response
               - revel_benign
               - ?f"allele_frequency_{allele_frequency}"
             sort:
@@ -236,7 +239,7 @@ calling:
               - revel
             desc: ?f"{get_description(event_type)} close to splice sites and {allele_frequency} allele frequency."
             labels:
-              callset: splice site variants
+              callset: novel splice site variants
               impact: any
               VAF: ?allele_frequency
             subcategory: ?get_description(event_type)
