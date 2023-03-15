@@ -97,8 +97,6 @@ calling:
       FORMAT['AF']['tumor'] < 0.05
     revel_malign: >-
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
-    revel_benign: >-
-      (ANN['REVEL'] is not NA and ANN['REVEL'] < 0.5)
     impact_moderate: >-
       ANN['IMPACT'] == 'MODERATE'
     impact_high: >-
@@ -110,8 +108,9 @@ calling:
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
     potentially_pathogenic: >-
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (
-      ((not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is not NA and ANN['REVEL'] < 0.5) or
-      'likely_pathogenic' in ANN['CLIN_SIG'])
+      ((not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is not NA and ANN['REVEL'] < 0.5) or (
+      'likely_pathogenic' in ANN['CLIN_SIG'] and not (
+      (not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)))
     loh_relevant: >-
       ANN['IMPACT'] != 'LOW' and ANN['IMPACT'] != 'MODIFIER' and
       not (set(["benign", "likely benign"]) > set(ANN['CLIN_SIG']) and "benign" in ANN['CLIN_SIG'])
