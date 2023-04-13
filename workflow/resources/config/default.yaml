@@ -7,8 +7,8 @@ __definitions__:
           return ["loh", "loh_or_amplification"]
   - |
     def get_description(event_type):
-        if event_type == "somatic":
-          return "somatic variants"
+        if event_type == "somatic_or_germline":
+          return "somatic or germline variants"
         if event_type == "loh":
           return "LOH or amplification of alt allele"
 
@@ -96,7 +96,7 @@ calling:
     allele_frequency_low: >-
       FORMAT['AF']['tumor'] < 0.05
     revel_malign: >-
-      (ANN['REVEL'] is NA or ANN['REVEL'] > 0.5)
+      (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     impact_moderate: >-
       ANN['IMPACT'] == 'MODERATE'
     impact_high: >-
@@ -104,8 +104,13 @@ calling:
     novel: >-
       not (ID and ID.startswith('rs'))
     pathogenic_risk_factor_drug_response: >-
-      (not {'risk_factor', 'pathogenic', 'likely_pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
+      (not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
+    potentially_pathogenic: >-
+      (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (
+      ((not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is not NA and ANN['REVEL'] < 0.5) or (
+      'likely_pathogenic' in ANN['CLIN_SIG'] and not (
+      (not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)))
     loh_relevant: >-
       ANN['IMPACT'] != 'LOW' and ANN['IMPACT'] != 'MODIFIER' and
       not (set(["benign", "likely benign"]) > set(ANN['CLIN_SIG']) and "benign" in ANN['CLIN_SIG'])
@@ -186,20 +191,37 @@ calling:
               VAF: ?allele_frequency
             subcategory: ?get_description(event_type)
 
-
           ?f"{event_type}_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
             varlociraptor: ?get_events(event_type)
             filter:
               - pathogenic_risk_factor_drug_response
+              - revel_malign
               - ?f"allele_frequency_{allele_frequency}"
             sort:
               - impact
               - revel
               - "tumor: allele frequency"
             desc: |
-              ?f"{get_description(event_type)} being pathogenic or risk factor high and {allele_frequency} allele frequency."
+              ?f"{get_description(event_type)} being pathogenic or risk factor high, having {allele_frequency} allele frequency and a revel score >= 0.5 if available."
             labels:
               callset: pathogenic, risk factor, or drug response
+              impact: low, moderate, high
+              VAF: ?allele_frequency
+            subcategory: ?get_description(event_type)
+
+          ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
+            varlociraptor: ?get_events(event_type)
+            filter:
+              - potentially_pathogenic
+              - ?f"allele_frequency_{allele_frequency}"
+            sort:
+              - impact
+              - revel
+              - "tumor: allele frequency"
+            desc: |
+              ?f"{get_description(event_type)} being pathogenic or risk factor high and {allele_frequency} allele frequency but having a weak revel score."
+            labels:
+              callset: potentially pathogenic, risk factor, or drug response
               impact: low, moderate, high
               VAF: ?allele_frequency
             subcategory: ?get_description(event_type)
@@ -216,7 +238,7 @@ calling:
               - revel
             desc: ?f"{get_description(event_type)} close to splice sites and {allele_frequency} allele frequency."
             labels:
-              callset: splice site variants
+              callset: novel splice site variants
               impact: any
               VAF: ?allele_frequency
             subcategory: ?get_description(event_type)
