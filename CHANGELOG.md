@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.3.4...v1.4.0) (2023-04-24)
+
+
+### Features
+
+* split events by af ([#23](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/23)) ([a0ebdd7](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/a0ebdd77549d01c080693b1b29b322a9bf1f70d2))
+* split pathogenic callsets into more certain and only potential ones ([#22](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/22)) ([4ad6bb6](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/4ad6bb6480451363b06704c4b1f6c3c14144cb91))
+
+
+### Bug Fixes
+
+* Update vembrane ([#26](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/26)) ([d3c942c](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/d3c942c3b534d7aaa6ac57d44056340a1eeeed15))
+
 ### [1.3.4](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.3.3...v1.3.4) (2023-02-15)
 
 
