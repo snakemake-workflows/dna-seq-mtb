@@ -1,10 +1,13 @@
 __definitions__:
   - |
-    def get_events(event_type):
+    def get_events(event_type, include_ffpe=False):
         if event_type == "somatic_or_germline":
-          return ["somatic_tumor_high", "somatic_tumor_low", "germline"]
+          events = ["somatic_tumor_high", "somatic_tumor_low", "germline"]
         if event_type == "loh":
-          return ["loh", "loh_or_amplification"]
+          events = ["loh", "loh_or_amplification"]
+        if include_ffpe:
+          events.append("ffpe_artifact")
+        return events
   - |
     def get_description(event_type):
         if event_type == "somatic_or_germline":
@@ -74,8 +77,8 @@ tables:
     observations: true
     short_observations: true
     annotation_fields:
-     - expr: ANN['EXON'].raw
-       name: Exon
+      - expr: ANN['EXON'].raw
+        name: Exon
   generate_excel: true
 
 calling:
@@ -173,7 +176,6 @@ calling:
               VAF: ?allele_frequency
             subcategory: ?get_description(event_type)
 
-
           ?f"{event_type}_impact_high_novel_{allele_frequency}_vaf":
             varlociraptor: ?get_events(event_type)
             filter:
@@ -192,8 +194,8 @@ calling:
               VAF: ?allele_frequency
             subcategory: ?get_description(event_type)
 
-          ?f"{event_type}_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
-            varlociraptor: ?get_events(event_type)
+          ? ?f"{event_type}_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf"
+          : varlociraptor: ?get_events(event_type, include_ffpe=True)
             filter:
               - pathogenic_risk_factor_drug_response
               - revel_malign
@@ -210,8 +212,8 @@ calling:
               VAF: ?allele_frequency
             subcategory: ?get_description(event_type)
 
-          ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf":
-            varlociraptor: ?get_events(event_type)
+          ? ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response_{allele_frequency}_vaf"
+          : varlociraptor: ?get_events(event_type, include_ffpe=True)
             filter:
               - potentially_pathogenic
               - ?f"allele_frequency_{allele_frequency}"
