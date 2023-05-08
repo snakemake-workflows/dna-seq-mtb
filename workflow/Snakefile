@@ -6,7 +6,7 @@ module dna_seq_varlociraptor:
         github(
             "snakemake-workflows/dna-seq-varlociraptor",
             path="workflow/Snakefile",
-            tag="v3.24.1",
+            tag="v3.24.2",
         )
     config:
         config
