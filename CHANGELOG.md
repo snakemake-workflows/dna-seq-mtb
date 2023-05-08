@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.4.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.4.0...v1.4.1) (2023-05-08)
+
+
+### Bug Fixes
+
+* for callsets with known variants, also include ffpe artifacts ([#28](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/28)) ([7953952](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/795395285935c2c57a21b9ceb9a06b617a357d6a))
+
+
+### Performance Improvements
+
+* update to dna-seq-varlociraptor 3.24.0 ([b305d51](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/b305d515846ded474ce5a55a9bae69d1e8dd861a))
+* update to dna-seq-varlociraptor 3.24.2 ([#29](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/29)) ([e44834d](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/e44834d7fd4499fb668e2fce9123f39759e70156))
+
 ## [1.4.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.3.4...v1.4.0) (2023-04-24)
 
 
