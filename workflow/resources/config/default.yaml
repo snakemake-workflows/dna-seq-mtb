@@ -156,6 +156,21 @@ calling:
     threshold: 0.05
     local: true
     events:
+      all_variants:
+        varlociraptor:
+          - germline
+          - somatic_tumor_high
+          - somatic_tumor_low
+          - ffpe_artifact
+        sort:
+          - REVEL
+          - "tumor: allele frequency"
+        desc: |
+          All found variants (somatic and germline).
+        labels:
+          callset: all
+        subcategory: ?get_description("somatic_or_germline")
+
       ?for event_type in ["somatic_or_germline", "loh"]:
         ?for allele_frequency in ["high", "low"]:
           ?f"{event_type}_impact_moderate_novel_{allele_frequency}_vaf":
