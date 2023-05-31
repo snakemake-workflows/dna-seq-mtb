@@ -78,7 +78,7 @@ tables:
     short_observations: true
     annotation_fields:
       - expr: ANN['EXON'].raw
-        name: Exon
+        name: exon
   generate_excel: true
 
 calling:
@@ -163,7 +163,7 @@ calling:
           - somatic_tumor_low
           - ffpe_artifact
         sort:
-          - REVEL
+          - revel
           - "tumor: allele frequency"
         desc: |
           All found variants (somatic and germline).
@@ -181,7 +181,7 @@ calling:
               - revel_malign
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - REVEL
+              - revel
               - "tumor: allele frequency"
             desc: |
               ?f"Novel {get_description(event_type)} with moderate impact and {allele_frequency} allele frequency."
@@ -199,7 +199,7 @@ calling:
               - revel_malign
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - REVEL
+              - revel
               - "tumor: allele frequency"
             desc: |
               ?f"Novel {get_description(event_type)} with high impact and {allele_frequency} allele frequency."
@@ -216,8 +216,8 @@ calling:
               - revel_malign
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - Impact
-              - REVEL
+              - impact
+              - revel
               - "tumor: allele frequency"
             desc: |
               ?f"{get_description(event_type)} being pathogenic or risk factor high, having {allele_frequency} allele frequency and a revel score >= 0.5 if available."
@@ -233,8 +233,8 @@ calling:
               - potentially_pathogenic
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - Impact
-              - REVEL
+              - impact
+              - revel
               - "tumor: allele frequency"
             desc: |
               ?f"{get_description(event_type)} being pathogenic or risk factor high and {allele_frequency} allele frequency but having a weak revel score."
@@ -252,8 +252,8 @@ calling:
               - novel
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - Impact
-              - REVEL
+              - impact
+              - revel
             desc: ?f"{get_description(event_type)} close to splice sites and {allele_frequency} allele frequency."
             labels:
               callset: novel splice site variants
@@ -268,8 +268,8 @@ calling:
               - cancer_genes
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - Impact
-              - REVEL
+              - impact
+              - revel
             desc: ?f"{get_description(event_type)} affecting known cancer genes with low to high impact and {allele_frequency} allele frequency."
             labels:
               callset: cancer genes
@@ -284,8 +284,8 @@ calling:
               - pi3k_pathway
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - Impact
-              - REVEL
+              - impact
+              - revel
             desc: |
               ?f"{get_description(event_type)} affecting PI3K-AKT-mTOR pathway genes, sorted by impact and revel scores while discarding synonymous variants and {allele_frequency} allele frequency."
             labels:
@@ -301,8 +301,8 @@ calling:
               - raf_pathway
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - Impact
-              - REVEL
+              - impact
+              - revel
             desc: |
               ?f"{get_description(event_type)} affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants and {allele_frequency} allele frequency."
             labels:
@@ -318,8 +318,8 @@ calling:
               - cell_cycle
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - Impact
-              - REVEL
+              - impact
+              - revel
             desc: |
               ?f"{get_description(event_type)} affecting cell cycle genes with low to high impact and {allele_frequency} allele frequency."
             labels:
@@ -335,8 +335,8 @@ calling:
               - dna_damage_response
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - Impact
-              - REVEL
+              - impact
+              - revel
             desc: |
               ?f"{get_description(event_type)} affecting dna damage resonse genes with low to high impact and {allele_frequency} allele frequency."
             labels:
@@ -352,8 +352,8 @@ calling:
               - g1_topart
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - Impact
-              - REVEL
+              - impact
+              - revel
             desc: |
               ?f"{get_description(event_type)} affecting G1 topart genes with low to high impact and {allele_frequency} allele frequency."
             labels:
@@ -369,8 +369,8 @@ calling:
               - tyrosine_kinases
               - ?f"allele_frequency_{allele_frequency}"
             sort:
-              - Impact
-              - REVEL
+              - impact
+              - revel
             desc: |
               ?f"{get_description(event_type)} affecting tyrosine kinases genes with low to high impact and {allele_frequency} allele frequency."
             labels:
