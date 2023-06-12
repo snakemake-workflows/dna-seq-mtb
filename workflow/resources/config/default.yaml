@@ -179,7 +179,7 @@ calling:
             - novel
             - revel_malign
           sort:
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
             - "tumor: allele frequency"
           desc: |
@@ -196,7 +196,7 @@ calling:
             - novel
             - revel_malign
           sort:
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
             - "tumor: allele frequency"
           desc: |
@@ -213,7 +213,7 @@ calling:
             - revel_malign
           sort:
             - impact
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
             - "tumor: allele frequency"
           desc: |
@@ -229,7 +229,7 @@ calling:
             - potentially_pathogenic
           sort:
             - impact
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
             - "tumor: allele frequency"
           desc: |
@@ -247,7 +247,7 @@ calling:
             - novel
           sort:
             - impact
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
           desc: ?f"{get_description(event_type)} close to splice sites."
           labels:
@@ -262,7 +262,7 @@ calling:
             - cancer_genes
           sort:
             - impact
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
           desc: ?f"{get_description(event_type)} affecting known cancer genes with low to high impact."
           labels:
@@ -277,7 +277,7 @@ calling:
             - pi3k_pathway
           sort:
             - impact
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting PI3K-AKT-mTOR pathway genes, sorted by impact and revel scores while discarding synonymous variants."
@@ -293,7 +293,7 @@ calling:
             - raf_pathway
           sort:
             - impact
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants."
@@ -309,7 +309,7 @@ calling:
             - cell_cycle
           sort:
             - impact
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting cell cycle genes with low to high impact."
@@ -325,7 +325,7 @@ calling:
             - dna_damage_response
           sort:
             - impact
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting dna damage resonse genes with low to high impact."
@@ -341,7 +341,7 @@ calling:
             - g1_topart
           sort:
             - impact
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting G1 topart genes with low to high impact."
@@ -357,7 +357,7 @@ calling:
             - tyrosine_kinases
           sort:
             - impact
-            - "binned_max_vaf"
+            - "binned max vaf"
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting tyrosine kinases genes with low to high impact."
