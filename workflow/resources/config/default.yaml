@@ -156,21 +156,6 @@ calling:
     threshold: 0.05
     local: true
     events:
-      all_variants:
-        varlociraptor:
-          - germline
-          - somatic_tumor_high
-          - somatic_tumor_low
-          - ffpe_artifact
-        sort:
-          - revel
-          - "tumor: allele frequency"
-        desc: |
-          All found variants (somatic and germline).
-        labels:
-          callset: all
-        subcategory: ?get_description("somatic_or_germline")
-
       ?for event_type in ["somatic_or_germline", "loh"]:
         ?f"{event_type}_impact_moderate_novel":
           varlociraptor: ?get_events(event_type)
@@ -212,8 +197,8 @@ calling:
             - pathogenic_risk_factor_drug_response
             - revel_malign
           sort:
-            - impact
             - "binned max vaf"
+            - impact
             - revel
             - "tumor: allele frequency"
           desc: |
@@ -228,8 +213,8 @@ calling:
           filter:
             - potentially_pathogenic
           sort:
-            - impact
             - "binned max vaf"
+            - impact
             - revel
             - "tumor: allele frequency"
           desc: |
@@ -246,8 +231,8 @@ calling:
             - revel_malign
             - novel
           sort:
-            - impact
             - "binned max vaf"
+            - impact
             - revel
           desc: ?f"{get_description(event_type)} close to splice sites."
           labels:
@@ -261,8 +246,8 @@ calling:
             - cancer_relevant
             - cancer_genes
           sort:
-            - impact
             - "binned max vaf"
+            - impact
             - revel
           desc: ?f"{get_description(event_type)} affecting known cancer genes with low to high impact."
           labels:
@@ -292,8 +277,8 @@ calling:
             - cancer_relevant
             - raf_pathway
           sort:
-            - impact
             - "binned max vaf"
+            - impact
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting RAF-MEK-ERK pathway genes, sorted by impact and revel scores while discarding synonymous variants."
@@ -308,8 +293,8 @@ calling:
             - cancer_relevant
             - cell_cycle
           sort:
-            - impact
             - "binned max vaf"
+            - impact
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting cell cycle genes with low to high impact."
@@ -324,8 +309,8 @@ calling:
             - cancer_relevant
             - dna_damage_response
           sort:
-            - impact
             - "binned max vaf"
+            - impact
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting dna damage resonse genes with low to high impact."
@@ -340,8 +325,8 @@ calling:
             - cancer_relevant
             - g1_topart
           sort:
-            - impact
             - "binned max vaf"
+            - impact
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting G1 topart genes with low to high impact."
@@ -356,8 +341,8 @@ calling:
             - cancer_relevant
             - tyrosine_kinases
           sort:
-            - impact
             - "binned max vaf"
+            - impact
             - revel
           desc: |
             ?f"{get_description(event_type)} affecting tyrosine kinases genes with low to high impact."
