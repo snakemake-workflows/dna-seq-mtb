@@ -94,7 +94,7 @@ calling:
         (consequence in set(['intergenic variant', 'upstream_gene_variant', 'downstream_gene_variant']))
         for consequence in ANN['Consequence'].split("&")
       ) and
-      not ('intron_variant' in ANN['Consequence'] and not 'splice_region_variant' in ANN['Consequence'])
+      not ('intron_variant' in ANN['Consequence'] and not 'splice' in ANN['Consequence'])
     allele_frequency_high: >-
       FORMAT['AF']['tumor'] >= 0.05
     allele_frequency_low: >-
