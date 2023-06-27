@@ -19,6 +19,9 @@ __definitions__:
   - |
     def contamination():
       return 1.0 - float(samples.loc["tumor", "purity"])
+  - |
+    def ffpe_threshold():
+      return 0.05 / contamination()
 
 species:
   heterozygosity: 0.001
@@ -34,9 +37,12 @@ species:
       Y: 0
   genome-size: 3.5e9
 
-?if is_ffpe:
-  expressions:
-    ffpe_subst: "C>T | G>A"
+expressions:
+  ?if is_ffpe:
+    is_ffpe_artifact: ?f"(C>T | G>A) & tumor:]0.0,{ffpe_threshold()}["
+  ?else:
+    is_ffpe_artifact: "false"
+  
 
 ?if "normal" in samples.index:
   samples:
@@ -55,16 +61,14 @@ species:
       somatic-effective-mutation-rate: 1e-6
 
   events:
-    somatic_tumor_high: "normal:0.0 & tumor:[0.1,1.0]"
-    somatic_normal_or_ctc: "(normal:]0.0,0.5[ | normal:]0.5,1.0[) & tumor:[0.0,1.0]"
-    loh: "normal:0.5 & tumor:1.0"
-    loh_or_amplification: "normal:0.5 & tumor:[0.9,1.0["
-    germline: "(normal:0.5 & tumor:[0.0,0.9[) | (normal:1.0 & tumor:[0.0,1.0])"
     ?if is_ffpe:
-      ffpe_artifact: "($ffpe_subst) & tumor:]0.0,0.05["
-      somatic_tumor_low: "normal:0.0 & ((($ffpe_subst) & tumor:]0.05,0.1[) | (!($ffpe_subst) & tumor:]0.0,0.1[))"
-    ?else:
-      somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1["
+      ffpe_artifact: "$is_ffpe_artifact"
+    somatic_tumor_high: "normal:0.0 & tumor:[0.1,1.0] & !$is_ffpe_artifact"
+    somatic_normal_or_ctc: "(normal:]0.0,0.5[ | normal:]0.5,1.0[) & tumor:[0.0,1.0] & !$is_ffpe_artifact"
+    loh: "normal:0.5 & tumor:1.0 & !$is_ffpe_artifact"
+    loh_or_amplification: "normal:0.5 & tumor:[0.9,1.0[ & !$is_ffpe_artifact"
+    germline: "((normal:0.5 & tumor:[0.0,0.9[) | (normal:1.0 & tumor:[0.0,1.0])) & !$is_ffpe_artifact"
+    somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1[ & !$is_ffpe_artifact"
 
 ?else:
   samples:
@@ -80,10 +84,8 @@ species:
       sex: ?sex
 
   events:
-    somatic_tumor_high: "normal:0.0 & tumor:[0.1,1.0]"
-    germline: "(normal:0.5 & tumor:0.5) | (normal:1.0 & tumor:1.0)"
     ?if is_ffpe:
-      ffpe_artifact: "($ffpe_subst) & tumor:]0.0,0.05["
-      somatic_tumor_low: "normal:0.0 & ((($ffpe_subst) & tumor:]0.05,0.1[) | (!($ffpe_subst) & tumor:]0.0,0.1[))"
-    ?else:
-      somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1["
+      ffpe_artifact: "$is_ffpe_artifact"
+    somatic_tumor_high: "normal:0.0 & tumor:[0.1,1.0] & !$is_ffpe_artifact"
+    germline: "((normal:0.5 & tumor:0.5) | (normal:1.0 & tumor:1.0)) & !$is_ffpe_artifact"
+    somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1[ & !$is_ffpe_artifact"
