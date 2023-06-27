@@ -17,11 +17,14 @@ __definitions__:
         raise ValueError(f"Unsupported sex in sample sheet (also ensure that sample sheet is entirely tab separated): {sex}")
   - is_ffpe = samples.loc["tumor", "ffpe"]
   - |
+    def purity():
+        return float(samples.loc["tumor", "purity"])
+  - |
     def contamination():
-      return 1.0 - float(samples.loc["tumor", "purity"])
+        return 1.0 - purity()
   - |
     def ffpe_threshold():
-      return 0.05 / contamination()
+        return 0.05 / purity()
 
 species:
   heterozygosity: 0.001
