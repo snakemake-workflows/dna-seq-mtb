@@ -48,9 +48,9 @@ params:
     # which might be misleading because all reads of an amplicon have the same start
     # position, strand etc. (--omit-strand-bias, --omit-read-position-bias, 
     # --omit-softclip-bias, --omit-read-orientation-bias).
-    call: ""
+    call: "--omit-read-position-bias"
     # Add extra arguments for varlociraptor preprocess. By default, we limit the depth to 200.
     # Increase this value for panel sequencing!
-    preprocess: "--max-depth 200"
+    preprocess: "--max-depth 30000"
   freebayes:
     min_alternate_fraction: 0.01 # Reduce for calling variants with lower VAFs
