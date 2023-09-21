@@ -61,7 +61,7 @@ species:
     loh_or_amplification: "normal:0.5 & tumor:[0.9,1.0["
     germline: "(normal:0.5 & tumor:[0.0,0.9[) | (normal:1.0 & tumor:[0.0,1.0])"
     ?if is_ffpe:
-      ffpe_artifact: "($ffpe_subst) & tumor:]0.0,0.05["
+      ffpe_artifact: "normal:0.0 & (($ffpe_subst) & tumor:]0.0,0.05[)"
       somatic_tumor_low: "normal:0.0 & ((($ffpe_subst) & tumor:]0.05,0.1[) | (!($ffpe_subst) & tumor:]0.0,0.1[))"
     ?else:
       somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1["
@@ -83,7 +83,7 @@ species:
     somatic_tumor_high: "normal:0.0 & tumor:[0.1,1.0]"
     germline: "(normal:0.5 & tumor:0.5) | (normal:1.0 & tumor:1.0)"
     ?if is_ffpe:
-      ffpe_artifact: "($ffpe_subst) & tumor:]0.0,0.05["
+      ffpe_artifact: "normal:0.0 & (($ffpe_subst) & tumor:]0.0,0.05[)"
       somatic_tumor_low: "normal:0.0 & ((($ffpe_subst) & tumor:]0.05,0.1[) | (!($ffpe_subst) & tumor:]0.0,0.1[))"
     ?else:
       somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1["
