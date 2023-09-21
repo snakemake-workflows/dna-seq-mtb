@@ -11,14 +11,20 @@ __definitions__:
     samples = params.samples.set_index("alias")
     if "ffpe" not in samples.columns:
       samples["ffpe"] = pd.NA
-  - sex = samples.loc["tumor", "sex"]
+  - sex = samples.loc[["tumor"], "sex"]
   - |
-    if pd.isna(sex) or sex not in ["male", "female"]:
-        raise ValueError(f"Unsupported sex in sample sheet (also ensure that sample sheet is entirely tab separated): {sex}")
-  - is_ffpe = samples.loc["tumor", "ffpe"]
+    if pd.isna(sex).any() or len(sex.unique()) != 1 or sex.iloc[0] not in ["male", "female"]:
+      raise ValueError(f"Unsupported sex in sample sheet (also ensure that sample sheet is entirely tab separated): {sex}")
+  - is_ffpe = samples.loc[["tumor"], "ffpe"].all()
+  - |
+    if len(samples.loc[["tumor"], "ffpe"].unique()) != 1:
+      raise ValueError(f"All samples within a group must to be either ffpe or not.")
+  - |
+    if len(samples.loc[["tumor"], "purity"].unique()) != 1:
+      raise ValueError(f"All samples within a group need to have the same purity.")
   - |
     def contamination():
-      return 1.0 - float(samples.loc["tumor", "purity"])
+      return 1.0 - float(samples.loc[["tumor"], "purity"].iloc[0])
 
 species:
   heterozygosity: 0.001
@@ -41,7 +47,7 @@ species:
 ?if "normal" in samples.index:
   samples:
     tumor:
-      sex: ?sex
+      sex: ?sex.iloc[0]
       somatic-effective-mutation-rate: 1e-6
       inheritance:
         clonal:
@@ -51,7 +57,7 @@ species:
         by: normal
         fraction: ?contamination()
     normal:
-      sex: ?sex
+      sex: ?sex.iloc[0]
       somatic-effective-mutation-rate: 1e-6
 
   events:
@@ -71,13 +77,13 @@ species:
     tumor:
       resolution: 0.01
       universe: "[0.0,1.0]"
-      sex: ?sex
+      sex: ?sex.iloc[0]
       contamination:
         by: normal
         fraction: ?contamination()
     normal:
       universe: "0.0 | 0.5 | 1.0"
-      sex: ?sex
+      sex: ?sex.iloc[0]
 
   events:
     somatic_tumor_high: "normal:0.0 & tumor:[0.1,1.0]"
