@@ -391,8 +391,6 @@ annotations:
         # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
         - LoFtool
         - REVEL
-  spliceai:
-    activate: true
 
 params:
   cutadapt: ""
