@@ -108,7 +108,7 @@ calling:
     novel: >-
       not (ID and ID.startswith('rs'))
     pathogenic_risk_factor_drug_response: >-
-      (not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
+      (not {'risk_factor', 'likely_pathogenic','pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
     potentially_pathogenic: >-
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (
