@@ -108,13 +108,13 @@ calling:
     novel: >-
       not (ID and ID.startswith('rs'))
     pathogenic_risk_factor_drug_response: >-
-      (not {'risk_factor', 'likely_pathogenic','pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
-      (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
+      (not {'risk_factor','pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
+      (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     potentially_pathogenic: >-
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (
       ((not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is not NA and ANN['REVEL'] < 0.5) or (
-      'likely_pathogenic' in ANN['CLIN_SIG'] and not (
-      (not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)))
+      'likely_pathogenic' in ANN['CLIN_SIG'] and (
+      ({'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5))))
     loh_relevant: >-
       ANN['IMPACT'] != 'LOW' and ANN['IMPACT'] != 'MODIFIER' and
       not (set(["benign", "likely benign"]) > set(ANN['CLIN_SIG']) and "benign" in ANN['CLIN_SIG'])
