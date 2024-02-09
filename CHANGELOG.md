@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.4.1...v1.5.0) (2024-02-09)
+
+
+### Features
+
+* add callset consisting of all found variants ([a436c97](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/a436c97fe95a97ee683a1b00af39c455b53ba4b5))
+* update config ([#36](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/36)) ([6621515](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/6621515558cc736c867e58b071845233e79d7ed5))
+
+
+### Bug Fixes
+
+* set lowercase column names ([#31](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/31)) ([de1f5c3](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/de1f5c31ccde8780592dfdbc4788beefd0675f8c))
+
 ### [1.4.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.4.0...v1.4.1) (2023-05-08)
 
 
