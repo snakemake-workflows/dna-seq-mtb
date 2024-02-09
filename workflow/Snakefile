@@ -6,7 +6,7 @@ module dna_seq_varlociraptor:
         github(
             "snakemake-workflows/dna-seq-varlociraptor",
             path="workflow/Snakefile",
-            tag="v4.0.1",
+            tag="v5.2.0",
         )
     config:
         config
@@ -35,15 +35,6 @@ else:
 
 if not "ffpe" in dna_seq_varlociraptor.samples.columns:
     dna_seq_varlociraptor.samples["ffpe"] = 0
-elif (
-    dna_seq_varlociraptor.samples.loc[
-        dna_seq_varlociraptor.samples["alias"] == "normal", "ffpe"
-    ]
-    == 1
-).any():
-    raise WorkflowError(
-        "Invalid value for ffpe column in sample sheet. ffpe treated normal samples are not supported."
-    )
 
 for sample, events in zip(
     ["normal", "tumor"],
