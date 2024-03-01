@@ -29,7 +29,7 @@ ref:
   # Ensembl species name
   species: homo_sapiens
   # Ensembl release
-  release: 110
+  release: 111
   # Genome build
   build: GRCh38
 
@@ -164,6 +164,7 @@ calling:
     events:
       ?for event_type in ["somatic_or_germline", "loh"]:
         ?f"{event_type}_impact_moderate_novel":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - impact_moderate
@@ -181,6 +182,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_impact_high_novel":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - impact_high
@@ -197,8 +199,9 @@ calling:
             impact: high
           subcategory: ?get_description(event_type)
 
-        ? ?f"{event_type}_pathogenic_risk_factor_drug_response"
-        : varlociraptor: ?get_events(event_type, include_ffpe=True)
+        ?f"{event_type}_pathogenic_risk_factor_drug_response":
+          types: ["variants"]
+          varlociraptor: ?get_events(event_type, include_ffpe=True)
           filter:
             - pathogenic_risk_factor_drug_response
             - revel_malign
@@ -214,8 +217,9 @@ calling:
             impact: low, moderate, high
           subcategory: ?get_description(event_type)
 
-        ? ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response"
-        : varlociraptor: ?get_events(event_type, include_ffpe=True)
+        ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response":
+          types: ["variants"]
+          varlociraptor: ?get_events(event_type, include_ffpe=True)
           filter:
             - potentially_pathogenic
           sort:
@@ -231,6 +235,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_splice_variants":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - splice_mutation
@@ -247,6 +252,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cancer_genes":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -262,6 +268,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_pi3k_pathway":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -278,6 +285,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_raf_pathway":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -294,6 +302,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cell_cycle":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -310,6 +319,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_dna_damage_response":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -326,6 +336,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_g1_topart":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -342,6 +353,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_tyrosine_kinases":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
