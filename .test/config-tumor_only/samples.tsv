@@ -1,2 +1,2 @@
-sample_name	group	alias	platform	purity	sex
-tumor	patient-a	tumor	ILLUMINA	0.89	male
+sample_name	group	alias	platform	purity	sex	datatype	calling
+tumor	patient-a	tumor	ILLUMINA	0.89	male	dna	variants
