@@ -442,6 +442,8 @@ population:
     # sample that occurs.
     path: ...
     # Varlociraptor events to be used.
+    alias: tumor
+    fdr: 0.05
     events:
       - somatic_tumor_high
       - somatic_tumor_medium
