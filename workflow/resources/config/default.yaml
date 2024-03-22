@@ -101,12 +101,20 @@ calling:
         for consequence in ANN['Consequence'].split("&")
       ) and
       not ('intron_variant' in ANN['Consequence'] and not 'splice' in ANN['Consequence'])
+    af_highly_relevant: >-
+      FORMAT['AF']['tumor'] > 0.1 and ANN['gnomADg_AF'] < 0.01
     allele_frequency_high: >-
       FORMAT['AF']['tumor'] >= 0.05
     allele_frequency_low: >-
       FORMAT['AF']['tumor'] < 0.05
+    spliceai_malign: >-
+      float(ANN['SpliceAI_pred_DS_AG']) > 0.5 or float(ANN['SpliceAI_pred_DS_AL']) > 0.5 or float(ANN['SpliceAI_pred_DS_DG']) > 0.5 or float(ANN['SpliceAI_pred_DS_DL']) > 0.5
+    am_malign: >-
+      ANN['am_pathogenicity'] is NA or float(ANN['am_pathogenicity']) >= 0.34
     revel_malign: >-
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
+    clinsig_not_benign: >-
+      len(set(['likely benign', 'benign']) & set(ANN['CLIN_SIG'])) == 0
     impact_moderate: >-
       ANN['IMPACT'] == 'MODERATE'
     impact_high: >-
@@ -121,9 +129,6 @@ calling:
       ((not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is not NA and ANN['REVEL'] < 0.5) or (
       'likely_pathogenic' in ANN['CLIN_SIG'] and (
       ({'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5))))
-    loh_relevant: >-
-      ANN['IMPACT'] != 'LOW' and ANN['IMPACT'] != 'MODIFIER' and
-      not (set(["benign", "likely benign"]) > set(ANN['CLIN_SIG']) and "benign" in ANN['CLIN_SIG'])
     cancer_relevant: >-
       ANN['IMPACT'] != 'MODIFIER' and ANN['Consequence'] != 'synonymous_variant'
     splice_mutation: >-
@@ -132,6 +137,10 @@ calling:
       aux-files:
         cancer_genes: ../resources/config/gene-sets/cancer-genes.txt
       expression: "ANN['SYMBOL'] in AUX['cancer_genes']"
+    drugable_genes:
+      aux-files:
+        drugable_genes: ../resources/config/gene-sets/drugable_genes.txt
+      expression: "ANN['SYMBOL'] in AUX['drugable_genes']"
     pi3k_pathway:
       aux-files:
         pathway_genes: ../resources/config/gene-sets/PI3K_AKT_mTOR.txt
@@ -162,7 +171,36 @@ calling:
     threshold: 0.05
     local: true
     events:
+      unfiltered:
+        types: ["variants"]
+        varlociraptor: ["somatic_tumor_high", "somatic_tumor_low", "germline"]
+        desc: Unfiltered variants
+        labels:
+          callset: Unfiltered
+          impact: All
+        subcategory: Unfiltered variant calls
       ?for event_type in ["somatic_or_germline", "loh"]:
+        ?f"{event_type}_likely_high_relevance":
+          types: ["variants"]
+          varlociraptor: ?get_events(event_type)
+          filter:
+            - cancer_relevant
+            - cancer_genes
+            - af_highly_relevant
+            - revel_malign
+            - am_malign
+            - spliceai_malign
+            - clinsig_not_benign
+          sort:
+            - "binned max vaf"
+            - impact
+            - revel
+          desc: ?f"{get_description(event_type)} with low to high impact but gnomAD AF <0.01 and VAF 0.1<"
+          labels:
+            callset: likely high relevance
+            impact: low, moderate, high
+          subcategory: ?get_description(event_type)
+
         ?f"{event_type}_impact_moderate_novel":
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
@@ -264,6 +302,22 @@ calling:
           desc: ?f"{get_description(event_type)} affecting known cancer genes with low to high impact."
           labels:
             callset: cancer genes
+            impact: low, moderate, high
+          subcategory: ?get_description(event_type)
+
+        ?f"{event_type}_drugable_genes":
+          types: ["variants"]
+          varlociraptor: ?get_events(event_type)
+          filter:
+            - cancer_relevant
+            - drugable_genes
+          sort:
+            - "binned max vaf"
+            - impact
+            - revel
+          desc: ?f"{get_description(event_type)} affecting known drugable genes with low to high impact."
+          labels:
+            callset: drugable genes
             impact: low, moderate, high
           subcategory: ?get_description(event_type)
 
@@ -378,6 +432,20 @@ remove_duplicates:
 calc_consensus_reads:
   activate: false
 
+
+population:
+  db:
+    # Set to true to contiuously update a population database (BCF) with each new sample.
+    activate: false
+    # Path to a BCF file to be used to collect variants across mutliple runs of the pipeline.
+    # The path can be outside of the workdir. Snakemake will update the file with each new
+    # sample that occurs.
+    path: ...
+    # Varlociraptor events to be used.
+    events:
+      - somatic_tumor_high
+      - somatic_tumor_medium
+
 annotations:
   vcfs:
     activate: true
@@ -409,6 +477,8 @@ annotations:
         # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
         - LoFtool
         - REVEL
+        - SpliceAI,snv=/home/moelder/resources/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz,indel=/home/moelder/resources/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz
+        - AlphaMissense,file=/home/moelder/resources/AlphaMissense/AlphaMissense_hg38.tsv.gz
 
 params:
   cutadapt: ""
