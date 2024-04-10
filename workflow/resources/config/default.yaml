@@ -108,9 +108,9 @@ calling:
     allele_frequency_low: >-
       FORMAT['AF']['tumor'] < 0.05
     spliceai_malign: >-
-      float(ANN['SpliceAI_pred_DS_AG']) > 0.5 or float(ANN['SpliceAI_pred_DS_AL']) > 0.5 or float(ANN['SpliceAI_pred_DS_DG']) > 0.5 or float(ANN['SpliceAI_pred_DS_DL']) > 0.5
+      ANN['SpliceAI_pred_DS_AG'] > 0.5 or ANN['SpliceAI_pred_DS_AL'] > 0.5 or ANN['SpliceAI_pred_DS_DG'] > 0.5 or ANN['SpliceAI_pred_DS_DL'] > 0.5
     am_malign: >-
-      ANN['am_pathogenicity'] is NA or float(ANN['am_pathogenicity']) >= 0.34
+      ANN['am_pathogenicity'] is NA or ANN['am_pathogenicity'] >= 0.34
     revel_malign: >-
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     clinsig_not_benign: >-
