@@ -311,6 +311,7 @@ calling:
           filter:
             - cancer_relevant
             - drugable_genes
+            - af_highly_relevant
           sort:
             - "binned max vaf"
             - impact
