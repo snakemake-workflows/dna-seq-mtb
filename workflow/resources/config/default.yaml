@@ -29,7 +29,7 @@ ref:
   # Ensembl species name
   species: homo_sapiens
   # Ensembl release
-  release: 109
+  release: 111
   # Genome build
   build: GRCh38
 
@@ -57,6 +57,12 @@ mutational_burden:
   events:
     - somatic_tumor_low
     - somatic_tumor_high
+
+# Sets the minimum average coverage for each gene.
+# Genes with lower average coverage will not be concidered in gene coverage datavzrd report
+# If not present min_avg_coverage will be set to 0 rendering all genes.
+gene_coverage:
+  min_avg_coverage: 5
 
 # printing of variants in a matrix, sorted by recurrence
 report:
@@ -108,13 +114,13 @@ calling:
     novel: >-
       not (ID and ID.startswith('rs'))
     pathogenic_risk_factor_drug_response: >-
-      (not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
-      (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'})
+      (not {'risk_factor','pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
+      (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     potentially_pathogenic: >-
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (
       ((not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is not NA and ANN['REVEL'] < 0.5) or (
-      'likely_pathogenic' in ANN['CLIN_SIG'] and not (
-      (not {'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)))
+      'likely_pathogenic' in ANN['CLIN_SIG'] and (
+      ({'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5))))
     loh_relevant: >-
       ANN['IMPACT'] != 'LOW' and ANN['IMPACT'] != 'MODIFIER' and
       not (set(["benign", "likely benign"]) > set(ANN['CLIN_SIG']) and "benign" in ANN['CLIN_SIG'])
@@ -158,6 +164,7 @@ calling:
     events:
       ?for event_type in ["somatic_or_germline", "loh"]:
         ?f"{event_type}_impact_moderate_novel":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - impact_moderate
@@ -175,6 +182,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_impact_high_novel":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - impact_high
@@ -191,8 +199,9 @@ calling:
             impact: high
           subcategory: ?get_description(event_type)
 
-        ? ?f"{event_type}_pathogenic_risk_factor_drug_response"
-        : varlociraptor: ?get_events(event_type, include_ffpe=True)
+        ?f"{event_type}_pathogenic_risk_factor_drug_response":
+          types: ["variants"]
+          varlociraptor: ?get_events(event_type, include_ffpe=True)
           filter:
             - pathogenic_risk_factor_drug_response
             - revel_malign
@@ -208,8 +217,9 @@ calling:
             impact: low, moderate, high
           subcategory: ?get_description(event_type)
 
-        ? ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response"
-        : varlociraptor: ?get_events(event_type, include_ffpe=True)
+        ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response":
+          types: ["variants"]
+          varlociraptor: ?get_events(event_type, include_ffpe=True)
           filter:
             - potentially_pathogenic
           sort:
@@ -225,6 +235,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_splice_variants":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - splice_mutation
@@ -241,6 +252,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cancer_genes":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -256,6 +268,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_pi3k_pathway":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -272,6 +285,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_raf_pathway":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -288,6 +302,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cell_cycle":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -304,6 +319,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_dna_damage_response":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -320,6 +336,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_g1_topart":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -336,6 +353,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_tyrosine_kinases":
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -377,12 +395,20 @@ annotations:
   vep:
     # Consider removing --everything if VEP is slow for you (e.g. for WGS),
     # and think carefully about which annotations you need.
-    params: --everything --check_existing
-    plugins:
-      # Add any plugin from https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html
-      # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
-      - LoFtool
-      - REVEL
+    candidate_calls:
+      params: --everything --check_existing
+      plugins:
+        # Add any plugin from https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html
+        # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
+        - LoFtool
+        - REVEL
+    final_calls:
+      params: --everything --check_existing
+      plugins:
+        # Add any plugin from https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html
+        # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
+        - LoFtool
+        - REVEL
 
 params:
   cutadapt: ""

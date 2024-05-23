@@ -1,5 +1,39 @@
 # Changelog
 
+### [1.6.2](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.6.1...v1.6.2) (2024-03-26)
+
+
+### Bug Fixes
+
+* update to dna-seq-varlociraptor 5.4.0 ([#42](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/42)) ([a2f9923](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/a2f9923a096614533565b73b8bddadd7e654be5f))
+
+### [1.6.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.6.0...v1.6.1) (2024-03-13)
+
+
+### Bug Fixes
+
+* update to dna-seq-varlociraptor 5.3.1 ([#39](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/39)) ([5c5994b](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/5c5994bb875b282daa7216f27ed2c067e9832c04))
+
+## [1.6.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.5.0...v1.6.0) (2024-03-05)
+
+
+### Features
+
+* support dna-seq-varlociraptor 5.3.0 ([#37](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/37)) ([366f76c](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/366f76c44e212a56e7462e899def0aaa4e8cf18d))
+
+## [1.5.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.4.1...v1.5.0) (2024-02-09)
+
+
+### Features
+
+* add callset consisting of all found variants ([a436c97](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/a436c97fe95a97ee683a1b00af39c455b53ba4b5))
+* update config ([#36](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/36)) ([6621515](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/6621515558cc736c867e58b071845233e79d7ed5))
+
+
+### Bug Fixes
+
+* set lowercase column names ([#31](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/31)) ([de1f5c3](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/de1f5c31ccde8780592dfdbc4788beefd0675f8c))
+
 ### [1.4.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.4.0...v1.4.1) (2023-05-08)
 
 
