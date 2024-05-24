@@ -42,7 +42,7 @@ species:
 
 expressions:
   ?if is_ffpe:
-    is_ffpe_artifact: ?f"(C>T | G>A) & tumor:]0.0,{ffpe_threshold()}["
+    is_ffpe_artifact: ?f"(C>T | G>A) & tumor:]0.0,{ffpe_threshold()}[ & normal:0.0"
   ?else:
     is_ffpe_artifact: "false"
   
