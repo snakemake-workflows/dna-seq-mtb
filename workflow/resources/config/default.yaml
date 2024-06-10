@@ -480,8 +480,8 @@ annotations:
         # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
         - LoFtool
         - REVEL
-        - SpliceAI,snv=/home/moelder/resources/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz,indel=/home/moelder/resources/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz
-        - AlphaMissense,file=/home/moelder/resources/AlphaMissense/AlphaMissense_hg38.tsv.gz
+        # - SpliceAI,snv=<path/to/spliceai_scores.raw.snv.hg38.vcf.gz>,indel=<path/to/spliceai_scores.raw.indel.hg38.vcf.gz
+        # - AlphaMissense,file=<path/to/AlphaMissense_hg38.tsv.gz>
 
 params:
   cutadapt: ""
