@@ -481,7 +481,7 @@ annotations:
         - LoFtool
         - REVEL
         # - SpliceAI,snv=<path/to/spliceai_scores.raw.snv.hg38.vcf.gz>,indel=<path/to/spliceai_scores.raw.indel.hg38.vcf.gz
-        # - AlphaMissense,file=<path/to/AlphaMissense_hg38.tsv.gz>
+        - AlphaMissense
 
 params:
   cutadapt: ""
