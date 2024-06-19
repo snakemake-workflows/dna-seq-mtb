@@ -130,7 +130,7 @@ calling:
       'likely_pathogenic' in ANN['CLIN_SIG'] and (
       ({'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5))))
     cancer_relevant: >-
-      ANN['IMPACT'] != 'MODIFIER' and ANN['Consequence'] != 'synonymous_variant'
+      ANN['Consequence'] != 'synonymous_variant'
     splice_mutation: >-
       'splice' in ANN['Consequence']
     cancer_genes:
@@ -203,6 +203,7 @@ calling:
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
+            - af_highly_relevant
             - impact_moderate
             - novel
             - revel_malign
@@ -221,6 +222,7 @@ calling:
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
+            - af_highly_relevant
             - impact_high
             - novel
             - revel_malign
@@ -241,6 +243,7 @@ calling:
           filter:
             - pathogenic_risk_factor_drug_response
             - revel_malign
+            - af_highly_relevant
           sort:
             - "binned max vaf"
             - impact
@@ -258,6 +261,7 @@ calling:
           varlociraptor: ?get_events(event_type, include_ffpe=True)
           filter:
             - potentially_pathogenic
+            - af_highly_relevant
           sort:
             - "binned max vaf"
             - impact
@@ -274,6 +278,7 @@ calling:
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
+            - af_highly_relevant
             - splice_mutation
             - revel_malign
             - novel
@@ -291,6 +296,7 @@ calling:
           types: ["variants", "fusions"]
           varlociraptor: ?get_events(event_type)
           filter:
+            - af_highly_relevant
             - cancer_relevant
             - cancer_genes
           sort:
@@ -324,6 +330,7 @@ calling:
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
+            - af_highly_relevant
             - cancer_relevant
             - pi3k_pathway
           sort:
@@ -341,6 +348,7 @@ calling:
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
+            - af_highly_relevant
             - cancer_relevant
             - raf_pathway
           sort:
@@ -358,6 +366,7 @@ calling:
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
+            - af_highly_relevant
             - cancer_relevant
             - cell_cycle
           sort:
@@ -375,6 +384,7 @@ calling:
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
+            - af_highly_relevant
             - cancer_relevant
             - dna_damage_response
           sort:
@@ -392,6 +402,7 @@ calling:
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
+            - af_highly_relevant
             - cancer_relevant
             - g1_topart
           sort:
@@ -409,6 +420,7 @@ calling:
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
+            - af_highly_relevant
             - cancer_relevant
             - tyrosine_kinases
           sort:
