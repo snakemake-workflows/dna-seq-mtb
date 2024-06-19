@@ -102,11 +102,7 @@ calling:
       ) and
       not ('intron_variant' in ANN['Consequence'] and not 'splice' in ANN['Consequence'])
     af_highly_relevant: >-
-      FORMAT['AF']['tumor'] > 0.1 and ANN['gnomADg_AF'] < 0.01
-    allele_frequency_high: >-
-      FORMAT['AF']['tumor'] >= 0.05
-    allele_frequency_low: >-
-      FORMAT['AF']['tumor'] < 0.05
+      (FORMAT['AF']['tumor'] >= 0.05 and (ANN['gnomADg_AF'] < 0.01 or ANN['gnomADg_AF'] is NA))
     revel_malign: >-
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     any_score_malign: >-
