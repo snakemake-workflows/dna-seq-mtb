@@ -169,7 +169,7 @@ calling:
       expression: "ANN['SYMBOL'] in AUX['tyrosine_kinases']"
   fdr-control:
     threshold: 0.05
-    local: true
+    mode: local-smart
     events:
       unfiltered:
         types: ["variants"]
