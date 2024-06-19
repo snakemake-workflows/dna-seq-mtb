@@ -107,11 +107,11 @@ calling:
       FORMAT['AF']['tumor'] >= 0.05
     allele_frequency_low: >-
       FORMAT['AF']['tumor'] < 0.05
-    spliceai_malign: >-
-      ANN['SpliceAI_pred_DS_AG'] > 0.5 or ANN['SpliceAI_pred_DS_AL'] > 0.5 or ANN['SpliceAI_pred_DS_DG'] > 0.5 or ANN['SpliceAI_pred_DS_DL'] > 0.5
-    am_malign: >-
-      ANN['am_pathogenicity'] is NA or ANN['am_pathogenicity'] >= 0.34
     revel_malign: >-
+      (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
+    any_score_malign: >-
+      (ANN['SpliceAI_pred_DS_AG'] > 0.5 or ANN['SpliceAI_pred_DS_AL'] > 0.5 or ANN['SpliceAI_pred_DS_DG'] > 0.5 or 
+      ANN['SpliceAI_pred_DS_DL'] > 0.5) or (ANN['am_pathogenicity'] is NA or ANN['am_pathogenicity'] >= 0.34) or 
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     clinsig_not_benign: >-
       len(set(['likely benign', 'benign']) & set(ANN['CLIN_SIG'])) == 0
@@ -187,9 +187,7 @@ calling:
             - cancer_relevant
             - cancer_genes
             - af_highly_relevant
-            - revel_malign
-            - am_malign
-            - spliceai_malign
+            - any_score_malign
             - clinsig_not_benign
           sort:
             - "binned max vaf"
@@ -290,7 +288,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cancer_genes":
-          types: ["variants"]
+          types: ["variants", "fusions"]
           varlociraptor: ?get_events(event_type)
           filter:
             - cancer_relevant
@@ -475,13 +473,6 @@ annotations:
         - REVEL
     final_calls:
       params: --everything --check_existing
-      plugins:
-        # Add any plugin from https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html
-        # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
-        - LoFtool
-        - REVEL
-        - SpliceAI,snv=/home/moelder/resources/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz,indel=/home/moelder/resources/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz
-        - AlphaMissense,file=/home/moelder/resources/AlphaMissense/AlphaMissense_hg38.tsv.gz
 
 params:
   cutadapt: ""

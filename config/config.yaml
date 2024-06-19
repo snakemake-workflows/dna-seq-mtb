@@ -41,6 +41,18 @@ report:
     # select a sample sheet column for stratification, e.g. the tumorboard session
     by-column: session
 
+annotations:
+  vep:
+    final_calls:
+      plugins:
+        # Add any plugin from https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html
+        # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
+        - LoFtool
+        - REVEL
+        # Paths for manually downloaded SpliceAI and AlphaMissense scores must be passed.
+        # - SpliceAI,snv=<path/to/spliceai_scores.raw.snv.hg38.vcf.gz>,indel=</path/to/spliceai_scores.raw.indel.hg38.vcf.gz>
+        # - AlphaMissense,file=</path/to/alphamissense_scores.tsv.gz>
+
 params:
   varlociraptor:
     # add extra arguments for varlociraptor call
