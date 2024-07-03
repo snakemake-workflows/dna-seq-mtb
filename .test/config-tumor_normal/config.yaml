@@ -57,6 +57,8 @@ annotations:
         # Add any plugin from https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html
         # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
         - LoFtool
+        - SpliceAI,snv=data/spliceai_scores.raw.snv.hg38.vcf.gz,indel=data/spliceai_scores.raw.snv.hg38.vcf.gz
+        - AlphaMissense,file=data/alphamissense_scores.tsv.gz
 
 # printing of variants in a table format
 tables:
