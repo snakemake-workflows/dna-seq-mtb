@@ -9,12 +9,15 @@ ref:
   # Ensembl species name
   species: saccharomyces_cerevisiae
   # Ensembl release
-  release: 100
+  release: 111
   # Genome build
   build: R64-1-1
 
 # If calc_consensus_reads is activated duplicates will be merged
 remove_duplicates:
+  activate: false
+
+mutational_signatures:
   activate: false
 
 calling:
