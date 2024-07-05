@@ -58,6 +58,11 @@ mutational_burden:
     - somatic_tumor_low
     - somatic_tumor_high
 
+mutational_signatures:
+  activate: true
+  events:
+    - present_variants
+
 # Sets the minimum average coverage for each gene.
 # Genes with lower average coverage will not be concidered in gene coverage datavzrd report
 # If not present min_avg_coverage will be set to 0 rendering all genes.
@@ -83,7 +88,7 @@ tables:
     observations: true
     short_observations: true
     annotation_fields:
-      - expr: ANN['EXON'].raw
+      - expr: ANN['EXON_NUMBER'].raw
         name: exon
   generate_excel: true
 
@@ -102,7 +107,7 @@ calling:
       ) and
       not ('intron_variant' in ANN['Consequence'] and not 'splice' in ANN['Consequence'])
     af_highly_relevant: >-
-      (FORMAT['AF']['tumor'] >= 0.05 and (ANN['gnomADg_AF'] < 0.01 or ANN['gnomADg_AF'] is NA))
+      (FORMAT['AF']['tumor'] >= 0.05 and (ANN['gnomADg_AF'] is NA or ANN['gnomADg_AF'] < 0.01))
     revel_malign: >-
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     any_score_malign: >-
@@ -168,13 +173,21 @@ calling:
     mode: local-smart
     events:
       unfiltered:
-        types: ["variants"]
+        types: ["variants", "fusions"]
         varlociraptor: ["somatic_tumor_high", "somatic_tumor_low", "germline"]
         desc: Unfiltered variants
         labels:
           callset: Unfiltered
-          impact: All
+          impact: all
         subcategory: Unfiltered variant calls
+      present_variants:
+        types: ["variants"]
+        varlociraptor: ["somatic_tumor_high", "somatic_tumor_low"]
+        desc: Present variants
+        labels:
+          callset: present
+          impact: all
+        subcategory: somatic variants
       ?for event_type in ["somatic_or_germline", "loh"]:
         ?f"{event_type}_likely_high_relevance":
           types: ["variants"]
@@ -289,7 +302,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cancer_genes":
-          types: ["variants", "fusions"]
+          types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
             - af_highly_relevant
