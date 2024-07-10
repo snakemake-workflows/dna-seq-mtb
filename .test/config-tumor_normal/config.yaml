@@ -5,13 +5,13 @@ units: config-tumor_normal/units.tsv
 ref:
   # Number of chromosomes to consider for calling.
   # The first n entries of the FASTA will be considered.
-  n_chromosomes: 17
+  n_chromosomes: 25
   # Ensembl species name
-  species: saccharomyces_cerevisiae
+  species: homo_sapiens
   # Ensembl release
   release: 111
   # Genome build
-  build: R64-1-1
+  build: GRCh38
 
 # If calc_consensus_reads is activated duplicates will be merged
 remove_duplicates:
