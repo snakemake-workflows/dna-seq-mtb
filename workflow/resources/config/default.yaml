@@ -32,6 +32,15 @@ ref:
   release: 111
   # Genome build
   build: GRCh38
+  pangenome:
+      # if active, reads will be aligned to given pangenome instead of to the linear reference genome
+      # Important: this is only supported for homo_sapiens so far
+      activate: true
+      # URL to pangenome index (xg format)
+      # Important: ensure that the pangenome index is built against the same reference genome as specified above under build
+      vcf:  https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/freeze/freeze1/minigraph-cactus/hprc-v1.1-mc-grch38/hprc-v1.1-mc-grch38.raw.vcf.gz
+      rename_expressions:
+        - "'MT' if contig == 'chrM' else contig[3:]"
 
 primers:
   trimming:
@@ -87,9 +96,6 @@ tables:
     event_prob: true
     observations: true
     short_observations: true
-    annotation_fields:
-      - expr: ANN['EXON_NUMBER'].raw
-        name: exon
   generate_excel: true
 
 calling:
@@ -173,6 +179,7 @@ calling:
     mode: local-smart
     events:
       unfiltered:
+        report: true
         types: ["variants", "fusions"]
         varlociraptor: ["somatic_tumor_high", "somatic_tumor_low", "germline"]
         desc: Unfiltered variants
@@ -181,6 +188,7 @@ calling:
           impact: all
         subcategory: Unfiltered variant calls
       present_variants:
+        report: true
         types: ["variants"]
         varlociraptor: ["somatic_tumor_high", "somatic_tumor_low"]
         desc: Present variants
@@ -190,6 +198,7 @@ calling:
         subcategory: somatic variants
       ?for event_type in ["somatic_or_germline", "loh"]:
         ?f"{event_type}_likely_high_relevance":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -209,6 +218,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_impact_moderate_novel":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -228,6 +238,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_impact_high_novel":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -247,6 +258,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_pathogenic_risk_factor_drug_response":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type, include_ffpe=True)
           filter:
@@ -266,6 +278,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type, include_ffpe=True)
           filter:
@@ -284,6 +297,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_splice_variants":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -302,6 +316,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cancer_genes":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -319,6 +334,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_drugable_genes":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -336,6 +352,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_pi3k_pathway":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -354,6 +371,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_raf_pathway":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -372,6 +390,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cell_cycle":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -390,6 +409,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_dna_damage_response":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -408,6 +428,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_g1_topart":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -426,6 +447,7 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_tyrosine_kinases":
+          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -514,3 +536,9 @@ params:
     preprocess: "--max-depth 200"
   freebayes:
     min_alternate_fraction: 0.05 # Reduce for calling variants with lower VAFs
+
+
+custom_alignment_properties:
+  activate: false
+  column: "panel"
+  tsv: "config/alignment_props.tsv"
