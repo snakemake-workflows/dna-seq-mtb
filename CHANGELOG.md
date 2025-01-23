@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.8.1...v1.9.0) (2025-01-23)
+
+
+### Features
+
+* pangenome alignment; updated cancer genes list; ffpe event considers purity; alphamissense, spliceai, and revel inclusion; better sorting and filtering; mutational signatures ([#33](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/33)) ([5159351](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/515935138b5e61dd04c79e23ae73085b8135fa61))
+
 ### [1.8.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.8.0...v1.8.1) (2024-07-17)
 
 
