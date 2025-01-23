@@ -44,10 +44,9 @@ ref:
 
 primers:
   trimming:
-    activate: false
-    # path to fasta files containg primer sequences
-    primers_fa1: "path/to/primer-fa1"
-    primers_fa2: "path/to/primer-fa2"
+    # path to fasta files containing primer sequences
+    primers_fa1: ""
+    primers_fa2: ""
     # optional primer file allowing to define primers per sample
     # overwrites primers_fa1 and primers_fa2
     # the tsv file requires three fields: panel, fa1 and fa2 (optional)
@@ -178,17 +177,7 @@ calling:
     threshold: 0.05
     mode: local-smart
     events:
-      unfiltered:
-        report: true
-        types: ["variants", "fusions"]
-        varlociraptor: ["somatic_tumor_high", "somatic_tumor_low", "germline"]
-        desc: Unfiltered variants
-        labels:
-          callset: Unfiltered
-          impact: all
-        subcategory: Unfiltered variant calls
       present_variants:
-        report: true
         types: ["variants"]
         varlociraptor: ["somatic_tumor_high", "somatic_tumor_low"]
         desc: Present variants
@@ -198,7 +187,6 @@ calling:
         subcategory: somatic variants
       ?for event_type in ["somatic_or_germline", "loh"]:
         ?f"{event_type}_likely_high_relevance":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -218,7 +206,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_impact_moderate_novel":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -238,7 +225,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_impact_high_novel":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -258,7 +244,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_pathogenic_risk_factor_drug_response":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type, include_ffpe=True)
           filter:
@@ -278,7 +263,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_potentially_pathogenic_risk_factor_drug_response":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type, include_ffpe=True)
           filter:
@@ -297,7 +281,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_splice_variants":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -316,7 +299,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cancer_genes":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -334,7 +316,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_drugable_genes":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -352,7 +333,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_pi3k_pathway":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -371,7 +351,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_raf_pathway":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -390,7 +369,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_cell_cycle":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -409,7 +387,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_dna_damage_response":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -428,7 +405,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_g1_topart":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
@@ -447,7 +423,6 @@ calling:
           subcategory: ?get_description(event_type)
 
         ?f"{event_type}_tyrosine_kinases":
-          report: true
           types: ["variants"]
           varlociraptor: ?get_events(event_type)
           filter:
