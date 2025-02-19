@@ -33,14 +33,11 @@ ref:
   # Genome build
   build: GRCh38
   pangenome:
-      # if active, reads will be aligned to given pangenome instead of to the linear reference genome
-      # Important: this is only supported for homo_sapiens so far
-      activate: true
-      # URL to pangenome index (xg format)
-      # Important: ensure that the pangenome index is built against the same reference genome as specified above under build
-      vcf:  https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/freeze/freeze1/minigraph-cactus/hprc-v1.1-mc-grch38/hprc-v1.1-mc-grch38.raw.vcf.gz
-      rename_expressions:
-        - "'MT' if contig == 'chrM' else contig[3:]"
+    # if active, reads will be aligned to given pangenome instead of to the linear reference genome
+    # Important: this is only supported for homo_sapiens so far
+    activate: true
+    source: hprc
+    version: v1.1
 
 primers:
   trimming:
@@ -178,7 +175,7 @@ calling:
     mode: local-smart
     events:
       present_variants:
-        types: ["variants"]
+        types: ["variants", "fusions"]
         varlociraptor: ["somatic_tumor_high", "somatic_tumor_low"]
         desc: Present variants
         labels:
