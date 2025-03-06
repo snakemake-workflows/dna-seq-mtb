@@ -173,7 +173,6 @@ calling:
   fdr-control:
     threshold: 0.05
     mode: local-smart
-    retain-artifacts: true
     events:
       present_variants:
         types: ["fusions"]
