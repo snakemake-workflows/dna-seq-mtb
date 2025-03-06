@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.10.0...v1.11.0) (2025-03-06)
+
+
+### Features
+
+* allow to configure retaining of artifacts ([#54](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/54)) ([07ffed8](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/07ffed89a66b503c4c4d8d945943b6689e3cdd17))
+
 ## [1.10.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.9.0...v1.10.0) (2025-02-19)
 
 
