@@ -173,15 +173,16 @@ calling:
   fdr-control:
     threshold: 0.05
     mode: local-smart
+    retain-artifacts: true
     events:
       present_variants:
-        types: ["variants", "fusions"]
-        varlociraptor: ["somatic_tumor_high", "somatic_tumor_low"]
-        desc: Present variants
+        types: ["fusions"]
+        varlociraptor: ["somatic_tumor_high", "somatic_tumor_low", "germline"]
+        desc: Present fusions
         labels:
           callset: present
           impact: all
-        subcategory: somatic variants
+        subcategory: somatic fusions
       ?for event_type in ["somatic_or_germline", "loh"]:
         ?f"{event_type}_likely_high_relevance":
           types: ["variants"]
