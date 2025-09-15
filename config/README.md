@@ -4,10 +4,14 @@ To configure this workflow, modify ``config/config.yaml`` according to your need
 
 # Sample sheet
 
-Add samples to `config/samples.tsv`. For each sample, the columns `sample_name`, `alias`, `platform`, and `group` have to be defined. 
-* Samples within the same `group` will be called jointly. 
-* Aliases represent the name of the sample within its group (they can be the same as the sample name, or something simpler, e.g. tumor or normal).
+Add samples to `config/samples.tsv`. For each sample, the columns `sample_name`, `alias`, `platform`, `datatype`, `calling` and `group` have to be defined. 
+* Samples within the same `group` can be referenced in a joint [Calling scenario](#calling-scenario) via their `alias`es.
+* `alias`es represent the name of the sample within its group. They are meant to be some abstract description of the sample type to be used in the [Calling scenario](#calling-scenario), and should thus be used consistently across groups. A classic example would be a combination of the `tumor` and `normal` aliases.
 * The `platform` column needs to contain the used sequencing plaform (one of 'CAPILLARY', 'LS454', 'ILLUMINA', 'SOLID', 'HELICOS', 'IONTORRENT', 'ONT', 'PACBIO’).
+* The purity column is required when being used with the default scenario. If it is unknown, it can be set to `1.0`.
+* The same `sample_name` entry can be used multiple times within a `samples.tsv` sample sheet, with only the value in the `group` column differing between repeated rows. This way, you can use the same sample for variant calling in different groups, for example if you use a panel of normal samples when you don't have matched normal samples for tumor variant calling.
+* The `datatype` column specifies what kind of data each sample corresponds to. This can either be `rna` or `dna`.
+* The `calling` column sets the kind of analysis to be performed. This can be either `fusions`, `variants` or both (comma separated). Fusion calling is still under developement and should be considered as experimental. 
 * The `ffpe` column specifies whether a sample is a ffpe substrate (1) or not (0). ffpe treated normal samples are not supported.
 
 Missing values can be specified by empty columns or by writing `NA`. Lines can be commented out with `#`.
@@ -15,11 +19,15 @@ Missing values can be specified by empty columns or by writing `NA`. Lines can b
 # Unit sheet
 
 For each sample, add one or more sequencing units (runs, lanes or replicates) to the unit sheet `config/units.tsv`.
-* Each unit has a `unit_name`, which can be e.g. a running number, or an actual run, lane or replicate id.
-* Each unit has a `sample_name`, which associates it with the biological sample it comes from.
-* For each unit, define either one (column `fq1`) or two (columns `fq1`, `fq2`) FASTQ files (these can point to anywhere in your system). 
-* Alternatively, you can define an SRA (sequence read archive) accession (starting with e.g. ERR or SRR) by using a column `sra`. In the latter case, the pipeline will automatically download the corresponding paired end reads from SRA. If both local files and SRA accession are available, the local files will be preferred.
-* Define adapters in the `adapters` column, by putting [cutadapt arguments](https://cutadapt.readthedocs.org) in quotation marks (e.g. `"-a ACGCGATCG -A GCTAGCGTACT"`).
+* Each unit has a `unit_name`. This can be a running number, or an actual run, lane or replicate id.
+* Each unit has a `sample_name`, which associates it with the biological sample it comes from. This information is used to merged all the units of a sample before read mapping and duplicate marking.
+* For each unit, you need to specify either of these columns:
+  * `fq1` only for single end reads. This can point to any FASTQ file on your system
+  * `fq1` and `fq2` for paired end reads. These can point to any FASTQ files on your system
+  * `sra` only: specify an SRA (sequence read archive) accession (starting with e.g. ERR or SRR). The pipeline will automatically download the corresponding paired end reads from SRA.
+  * If both local files (`fq1`, `fq2`) and SRA accession (`sra`) are available, the local files will be used.
+* Define adapters in the `adapters` column, by putting [fastp arguments](https://github.com/OpenGene/fastp?tab=readme-ov-file#adapters) in quotation marks (e.g. `"--adapter_sequence ACGCGATCG --adapter_sequence_r2 GCTAGCGTACT"`).
+Automatic adapter trimming can be enabled by setting the keyword `auto_trim` (Please consider the [fastp documentation](https://github.com/OpenGene/fastp) for flags to put here to configure the automatic trimming behavior more explicitly). If the column is empty no trimming will be performed.
 
 Missing values can be specified by empty columns or by writing `NA`. Lines can be commented out with `#`.
 
@@ -29,7 +37,17 @@ For panel data the pipeline allows trimming of amplicon primers on both ends of 
 In case of single end primers these are supposed to be located at the left end of a read.
 When primer trimming is enabled, primers have to be defined either directly in the `config.yaml` or in a seperate tsv-file.
 Defining primers directly in the config file is prefered when all samples come from the same primer set.
-In case of different panels, primers have to be set panel-wise in a seperate tsv-file (the path to that tsv can be set in the config under `primers/trimming/tsv`).
+In case of different panels, primers have to be set panel-wise in a seperate tsv-file.
 For each panel the following columns need to be set: `panel`, `fa1` and `fa2` (optional).
 Additionally, for each sample the corresponding panel must be defined in `samples.tsv` (column `panel`).
+If a panel is not provided for a sample, trimming will not be performed on that sample. 
 For single primer trimming only, the first entry in the config (respective in the tsv file) needs to be defined.
+
+# Annotating UMIS
+
+For annotating UMIs two additional columns in `sample.tsv` must be set:
+* `umi_read`: this can be either of the following options:
+  * `fq1` if the UMIs are part of read 1
+  * `fq2` if the UMIs are part of read 2
+  * `both` if there are UMIs in both paired end reads
+* `umi_len`: Number of bases (UMI length) to be annotated as UMI.
