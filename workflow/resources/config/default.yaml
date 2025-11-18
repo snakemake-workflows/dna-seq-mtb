@@ -29,7 +29,7 @@ ref:
   # Ensembl species name
   species: homo_sapiens
   # Ensembl release
-  release: 111
+  release: 115
   # Genome build
   build: GRCh38
   pangenome:
@@ -113,8 +113,8 @@ calling:
     revel_malign: >-
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     any_score_malign: >-
-      (ANN['SpliceAI_pred_DS_AG'] > 0.5 or ANN['SpliceAI_pred_DS_AL'] > 0.5 or ANN['SpliceAI_pred_DS_DG'] > 0.5 or 
-      ANN['SpliceAI_pred_DS_DL'] > 0.5) or (ANN['am_pathogenicity'] is NA or ANN['am_pathogenicity'] >= 0.34) or 
+      (ANN['SpliceAI_pred_DS_AG'] > 0.5 or ANN['SpliceAI_pred_DS_AL'] > 0.5 or ANN['SpliceAI_pred_DS_DG'] > 0.5 or
+      ANN['SpliceAI_pred_DS_DL'] > 0.5) or (ANN['am_pathogenicity'] is NA or ANN['am_pathogenicity'] >= 0.34) or
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     clinsig_not_benign: >-
       len(set(['likely benign', 'benign']) & set(ANN['CLIN_SIG'])) == 0
@@ -125,7 +125,7 @@ calling:
     novel: >-
       not (ID and ID.startswith('rs'))
     pathogenic_risk_factor_drug_response: >-
-      (not {'risk_factor','pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
+      (not {'risk_factor','pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     potentially_pathogenic: >-
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (
