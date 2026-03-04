@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.12.3](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.12.2...v1.12.3) (2026-03-04)
+
+
+### Bug Fixes
+
+* fix filter condition ([#65](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/65)) ([00b222a](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/00b222a4afebe3ca2511a14319ad8f64cf77fc62))
+
+
+### Performance Improvements
+
+* bump dna-seq-varlociraptor to v6.5.1  ([#67](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/67)) ([0704805](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/07048057fd786612a5cbba4531e8ce8d7c984f94))
+
 ### [1.12.2](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.12.1...v1.12.2) (2026-02-18)
 
 
