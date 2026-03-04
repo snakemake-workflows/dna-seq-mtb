@@ -105,7 +105,7 @@ calling:
     candidates: >-
       not any(
         (consequence in set(['intergenic variant', 'upstream_gene_variant', 'downstream_gene_variant']))
-        for consequence in ANN['Consequence'].split("&")
+        for consequence in ANN['Consequence']
       ) and
       not ('intron_variant' in ANN['Consequence'] and not 'splice' in ANN['Consequence'])
     af_highly_relevant: >-
