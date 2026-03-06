@@ -76,7 +76,7 @@ gene_coverage:
 
 # printing of variants in a matrix, sorted by recurrence
 report:
-  # if stratificatio is deactivated, one oncoprint for all
+  # if stratification is deactivated, one oncoprint for all
   # samples will be created.
   activate: true
   max_read_depth: 250
@@ -113,8 +113,8 @@ calling:
     revel_malign: >-
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     any_score_malign: >-
-      (ANN['SpliceAI_pred_DS_AG'] > 0.5 or ANN['SpliceAI_pred_DS_AL'] > 0.5 or ANN['SpliceAI_pred_DS_DG'] > 0.5 or 
-      ANN['SpliceAI_pred_DS_DL'] > 0.5) or (ANN['am_pathogenicity'] is NA or ANN['am_pathogenicity'] >= 0.34) or 
+      (ANN['SpliceAI_pred_DS_AG'] > 0.5 or ANN['SpliceAI_pred_DS_AL'] > 0.5 or ANN['SpliceAI_pred_DS_DG'] > 0.5 or
+      ANN['SpliceAI_pred_DS_DL'] > 0.5) or (ANN['am_pathogenicity'] is NA or ANN['am_pathogenicity'] >= 0.34) or
       (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     clinsig_not_benign: >-
       len(set(['likely benign', 'benign']) & set(ANN['CLIN_SIG'])) == 0
@@ -125,7 +125,7 @@ calling:
     novel: >-
       not (ID and ID.startswith('rs'))
     pathogenic_risk_factor_drug_response: >-
-      (not {'risk_factor','pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and 
+      (not {'risk_factor','pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5)
     potentially_pathogenic: >-
       (ANN['IMPACT'] in {'LOW', 'MODERATE', 'HIGH'}) and (
@@ -480,14 +480,15 @@ annotations:
     # Consider removing --everything if VEP is slow for you (e.g. for WGS),
     # and think carefully about which annotations you need.
     candidate_calls:
-      params: --everything --check_existing
-      plugins:
-        # Add any plugin from https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html
-        # Plugin args can be passed as well, e.g. "LoFtool,path/to/custom/scores.txt".
-        - LoFtool
-        - REVEL
+      params: ""
+      plugins: []
     final_calls:
       params: --everything --check_existing
+      plugins:
+        - REVEL
+        - CADD
+      score_versions:
+        cadd: v1.7
 
 params:
   fastp: ""
