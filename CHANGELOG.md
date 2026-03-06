@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.13.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.12.3...v1.13.0) (2026-03-06)
+
+
+### Features
+
+* add CADD score annotation ([#70](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/70)) ([23f7df7](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/23f7df77e2e1d40819d0733a60be9351d15f33e8))
+
+
+### Performance Improvements
+
+* update dna-seq-varlociraptor from v6.5.1 to v6.5.2 ([#68](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/68)) ([b4cd789](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/b4cd78956a3f8a51a56d5a8614ad36ffc02ec7f9))
+
 ### [1.12.3](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.12.2...v1.12.3) (2026-03-04)
 
 
