@@ -107,7 +107,12 @@ calling:
         (consequence in set(['intergenic variant', 'upstream_gene_variant', 'downstream_gene_variant']))
         for consequence in ANN['Consequence']
       ) and
-      not ('intron_variant' in ANN['Consequence'] and not 'splice' in ANN['Consequence'])
+      not (
+        'intron_variant' in ANN['Consequence']
+        and not any(
+          'splice' in consequence for consequence in ANN['Consequence']
+        )
+      )
     af_highly_relevant: >-
       (FORMAT['AF']['tumor'] >= 0.05 and (ANN['gnomADg_AF'] is NA or ANN['gnomADg_AF'] < 0.01))
     revel_malign: >-
