@@ -109,7 +109,7 @@ calling:
       ) and
       not (
         'intron_variant' in ANN['Consequence']
-        and not (
+        and not any(
           'splice' in consequence for consequence in ANN['Consequence']
         )
       )
