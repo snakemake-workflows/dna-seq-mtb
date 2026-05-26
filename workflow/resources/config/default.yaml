@@ -138,9 +138,11 @@ calling:
       'likely_pathogenic' in ANN['CLIN_SIG'] and (
       ({'risk_factor', 'pathogenic', 'drug_response'}.isdisjoint(ANN['CLIN_SIG'])) and (ANN['REVEL'] is NA or ANN['REVEL'] >= 0.5))))
     cancer_relevant: >-
-      ANN['Consequence'] != 'synonymous_variant'
+      'synonymous_variant' not in ANN['Consequence']
     splice_mutation: >-
-      'splice' in ANN['Consequence']
+      any(
+        'splice' in consequence for consequence in ANN['Consequence']
+      )
     cancer_genes:
       aux-files:
         cancer_genes: ../resources/config/gene-sets/cancer-genes.txt
