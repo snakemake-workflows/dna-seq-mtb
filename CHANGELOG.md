@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.13.2](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.13.1...v1.13.2) (2026-05-27)
+
+
+### Bug Fixes
+
+* fix Consequence for all filter criteria ([#76](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/76)) ([46fe53b](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/46fe53ba2f0a40599ae62c3247f392f4bd0aa740))
+* fix filtering of candidates ([#74](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/74)) ([b647710](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/b64771047899f356f75eb56eef561c4a4560cb97))
+
 ### [1.13.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.13.0...v1.13.1) (2026-03-24)
 
 
