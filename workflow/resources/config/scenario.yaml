@@ -16,6 +16,7 @@ __definitions__:
     if pd.isna(sex) or sex not in ["male", "female"]:
         raise ValueError(f"Unsupported sex in sample sheet (also ensure that sample sheet is entirely tab separated): {sex}")
   - is_ffpe = samples.loc["tumor", "ffpe"]
+  - is_dna = samples.loc["tumor", "datatype"] == "dna"
   - |
     def purity():
         return float(samples.loc["tumor", "purity"])
@@ -41,13 +42,13 @@ species:
   genome-size: 3.5e9
 
 expressions:
-  ?if is_ffpe:
+  ?if is_ffpe and is_dna:
     is_ffpe_artifact: ?f"(C>T | G>A) & tumor:]0.0,{ffpe_threshold()}[ & normal:0.0"
   ?else:
     is_ffpe_artifact: "false"
   
 
-?if "normal" in samples.index:
+?if "normal" in samples.index: # and is_dna (are normal samples a thing in case of fusion/rna data?) 
   samples:
     tumor:
       sex: ?sex
@@ -64,14 +65,16 @@ expressions:
       somatic-effective-mutation-rate: 1e-6
 
   events:
-    ?if is_ffpe:
+    ?if is_ffpe and is_dna:
       ffpe_artifact: "$is_ffpe_artifact"
     somatic_tumor_high: "normal:0.0 & tumor:[0.1,1.0] & !$is_ffpe_artifact"
     somatic_normal_or_ctc: "(normal:]0.0,0.5[ | normal:]0.5,1.0[) & tumor:[0.0,1.0] & !$is_ffpe_artifact"
     loh: "normal:0.5 & tumor:1.0 & !$is_ffpe_artifact"
     loh_or_amplification: "normal:0.5 & tumor:[0.9,1.0[ & !$is_ffpe_artifact"
-    germline: "((normal:0.5 & tumor:[0.0,0.9[) | (normal:1.0 & tumor:[0.0,1.0])) & !$is_ffpe_artifact"
     somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1[ & !$is_ffpe_artifact"
+    ?if is_dna:
+      germline: "((normal:0.5 & tumor:[0.0,0.9[) | (normal:1.0 & tumor:[0.0,1.0])) & !$is_ffpe_artifact"
+    
 
 ?else:
   samples:
@@ -87,8 +90,9 @@ expressions:
       sex: ?sex
 
   events:
-    ?if is_ffpe:
+    ?if is_ffpe and is_dna:
       ffpe_artifact: "$is_ffpe_artifact"
     somatic_tumor_high: "normal:0.0 & tumor:[0.1,1.0] & !$is_ffpe_artifact"
-    germline: "((normal:0.5 & tumor:0.5) | (normal:1.0 & tumor:1.0)) & !$is_ffpe_artifact"
     somatic_tumor_low: "normal:0.0 & tumor:]0.0,0.1[ & !$is_ffpe_artifact"
+    if is_dna:
+      germline: "((normal:0.5 & tumor:0.5) | (normal:1.0 & tumor:1.0)) & !$is_ffpe_artifact"
