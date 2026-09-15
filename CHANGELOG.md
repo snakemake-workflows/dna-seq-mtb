@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.13.3](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.13.2...v1.13.3) (2026-09-15)
+
+
+### Performance Improvements
+
+* update dna-seq-varlociraptor to 6.10.0, including a major update to pangenome read alignment speed and accuracy ([#77](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/77)) ([a8493cf](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/a8493cf89c8cb52cc5294d07fd67888b2a617e23))
+* update dna-seq-varlociraptor to v6.10.1 ([#79](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/79)) ([0bf02a6](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/0bf02a6ddad5fdfb343dbc78b8b994683319d81f))
+
 ### [1.13.2](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.13.1...v1.13.2) (2026-05-27)
 
 
