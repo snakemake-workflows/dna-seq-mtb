@@ -30,6 +30,7 @@ mutational_signatures:
   activate: false
 
 calling:
+  only_cancer_genes: true
   delly:
     activate: true
   freebayes:

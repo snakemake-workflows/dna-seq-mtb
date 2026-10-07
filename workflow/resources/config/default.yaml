@@ -95,6 +95,7 @@ tables:
   generate_excel: true
 
 calling:
+  only_cancer_genes: false
   delly:
     activate: true
   freebayes:
@@ -102,17 +103,34 @@ calling:
   # See https://varlociraptor.github.io/docs/calling/#generic-variant-calling
   scenario: config/scenario.yaml
   filter:
-    candidates: >-
-      not any(
-        (consequence in set(['intergenic variant', 'upstream_gene_variant', 'downstream_gene_variant']))
-        for consequence in ANN['Consequence']
-      ) and
-      not (
-        'intron_variant' in ANN['Consequence']
-        and not any(
-          'splice' in consequence for consequence in ANN['Consequence']
+    ?if this.dpath_get("calling/only_cancer_genes"):
+      candidates: 
+        aux-files:
+          cancer_genes: ../resources/config/gene-sets/cancer-genes.txt
+        expression: >-
+          ANN['SYMBOL'] in AUX['cancer_genes'] and
+          not any(
+            (consequence in set(['intergenic variant', 'upstream_gene_variant', 'downstream_gene_variant']))
+            for consequence in ANN['Consequence']
+          ) and
+          not (
+            'intron_variant' in ANN['Consequence']
+            and not any(
+              'splice' in consequence for consequence in ANN['Consequence']
+            )
+          )
+    ?else:
+      candidates: >-
+        not any(
+          (consequence in set(['intergenic variant', 'upstream_gene_variant', 'downstream_gene_variant']))
+          for consequence in ANN['Consequence']
+        ) and
+        not (
+          'intron_variant' in ANN['Consequence']
+          and not any(
+            'splice' in consequence for consequence in ANN['Consequence']
+          )
         )
-      )
     af_highly_relevant: >-
       (FORMAT['AF']['tumor'] >= 0.05 and (ANN['gnomADg_AF'] is NA or ANN['gnomADg_AF'] < 0.01))
     revel_malign: >-
