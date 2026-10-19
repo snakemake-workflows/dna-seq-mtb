@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.14.2](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.14.1...v1.14.2) (2026-10-19)
+
+
+### Bug Fixes
+
+* use dna-seq-varlociraptor 6.11.2 (fixes atomize) ([4d0f9e9](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/4d0f9e92ff205fed7f07d642f06253c2848b730d))
+
 ### [1.14.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.14.0...v1.14.1) (2026-10-19)
 
 
