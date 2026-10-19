@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.14.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.14.0...v1.14.1) (2026-10-19)
+
+
+### Bug Fixes
+
+* use dna-seq-varlociraptor 6.11.1 and activate fragment_end_bias for ffpe tumor samples ([#83](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/83)) ([ae7a71c](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/ae7a71cf287a58af11465449c46ea892fcc4198e))
+
 ## [1.14.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.13.3...v1.14.0) (2026-10-06)
 
 
