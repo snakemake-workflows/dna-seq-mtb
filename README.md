@@ -1,6 +1,6 @@
 # Snakemake workflow: dna-seq-mtb
 
-[![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
+[![Snakemake](https://img.shields.io/badge/snakemake-≥9.24.0-brightgreen.svg)](https://snakemake.github.io)
 [![GitHub actions status](https://github.com/snakemake-workflows/dna-seq-mtb/workflows/Tests/badge.svg?branch=main)](https://github.com/snakemake-workflows/dna-seq-mtb/actions?query=branch%3Amain+workflow%3ATests)
 
 

@@ -1,5 +1,34 @@
 # Changelog
 
+### [1.14.2](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.14.1...v1.14.2) (2026-10-19)
+
+
+### Bug Fixes
+
+* use dna-seq-varlociraptor 6.11.2 (fixes atomize) ([4d0f9e9](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/4d0f9e92ff205fed7f07d642f06253c2848b730d))
+
+### [1.14.1](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.14.0...v1.14.1) (2026-10-19)
+
+
+### Bug Fixes
+
+* use dna-seq-varlociraptor 6.11.1 and activate fragment_end_bias for ffpe tumor samples ([#83](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/83)) ([ae7a71c](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/ae7a71cf287a58af11465449c46ea892fcc4198e))
+
+## [1.14.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.13.3...v1.14.0) (2026-10-06)
+
+
+### Features
+
+* update to dna-seq-varlociraptor 6.11.0 ([#80](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/80)) ([e32471b](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/e32471b6948782da824541b6c07357cb17e2558b))
+
+### [1.13.3](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.13.2...v1.13.3) (2026-09-15)
+
+
+### Performance Improvements
+
+* update dna-seq-varlociraptor to 6.10.0, including a major update to pangenome read alignment speed and accuracy ([#77](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/77)) ([a8493cf](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/a8493cf89c8cb52cc5294d07fd67888b2a617e23))
+* update dna-seq-varlociraptor to v6.10.1 ([#79](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/79)) ([0bf02a6](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/0bf02a6ddad5fdfb343dbc78b8b994683319d81f))
+
 ### [1.13.2](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.13.1...v1.13.2) (2026-05-27)
 
 
