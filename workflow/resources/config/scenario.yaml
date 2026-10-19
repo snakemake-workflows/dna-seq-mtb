@@ -59,6 +59,8 @@ expressions:
       contamination:
         by: normal
         fraction: ?contamination()
+      ?if is_ffpe:
+        fragment_end_bias: true
     normal:
       sex: ?sex
       somatic-effective-mutation-rate: 1e-6
