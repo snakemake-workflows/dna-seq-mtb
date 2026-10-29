@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.14.3...v1.15.0) (2026-10-29)
+
+
+### Features
+
+* update cancer genes list with additional candidates from human genetics ([#87](https://www.github.com/snakemake-workflows/dna-seq-mtb/issues/87)) ([a17301e](https://www.github.com/snakemake-workflows/dna-seq-mtb/commit/a17301e749b1518e86a37a7e91333012bc7f8b63))
+
 ### [1.14.3](https://www.github.com/snakemake-workflows/dna-seq-mtb/compare/v1.14.2...v1.14.3) (2026-10-19)
 
 
