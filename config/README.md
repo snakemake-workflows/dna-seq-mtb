@@ -12,7 +12,7 @@ Add samples to `config/samples.tsv`. For each sample, the columns `sample_name`,
 * The same `sample_name` entry can be used multiple times within a `samples.tsv` sample sheet, with only the value in the `group` column differing between repeated rows. This way, you can use the same sample for variant calling in different groups, for example if you use a panel of normal samples when you don't have matched normal samples for tumor variant calling.
 * The `datatype` column specifies what kind of data each sample corresponds to. This can either be `rna` or `dna`.
 * The `calling` column sets the kind of analysis to be performed. This can be either `fusions`, `variants` or both (comma separated). Fusion calling is still under developement and should be considered as experimental. 
-* The `ffpe` column specifies whether a sample is a ffpe substrate (1) or not (0). ffpe treated normal samples are not supported.
+* The `ffpe` column specifies whether a sample is a ffpe substrate (1) or not (0).
 
 Missing values can be specified by empty columns or by writing `NA`. Lines can be commented out with `#`.
 
